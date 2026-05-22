@@ -16,11 +16,13 @@ interface QuizFinalPanelProps {
   mode?: QuizMode;
   correctAnswers: number;
   totalAnswers: number;
+  unansweredAnswers?: number;
   roundReached?: number;
   artwork: Artwork;
   questionType?: QuestionType;
   selectedAnswer?: string | null;
   correctAnswer?: string;
+  timedOut?: boolean;
   shareArtworks?: Artwork[];
   shareCardSubtitle?: string;
   onRestart: () => void;
@@ -31,11 +33,13 @@ export function QuizFinalPanel({
   mode = "famous_10",
   correctAnswers,
   totalAnswers,
+  unansweredAnswers = 0,
   roundReached,
   artwork,
   questionType,
   selectedAnswer,
   correctAnswer,
+  timedOut = false,
   shareArtworks,
   shareCardSubtitle,
   onRestart,
@@ -60,9 +64,11 @@ export function QuizFinalPanel({
     ? `pictoria-clasico-${correctAnswers}-aciertos.png`
     : `pictoria-${correctAnswers}-de-${totalAnswers}.png`;
   const selectedAnswerLabel =
-    questionType && selectedAnswer
-      ? getLocalizedQuizAnswer(questionType, selectedAnswer, language)
-      : null;
+    timedOut
+      ? language === "es" ? "Tiempo agotado" : "Time's up"
+      : questionType && selectedAnswer
+        ? getLocalizedQuizAnswer(questionType, selectedAnswer, language)
+        : null;
   const correctAnswerLabel =
     questionType && correctAnswer
       ? getLocalizedQuizAnswer(questionType, correctAnswer, language)
@@ -163,13 +169,21 @@ export function QuizFinalPanel({
               : "You completed this 10-question Pictoria challenge."}
         </p>
 
-        <div className="mt-5 inline-flex rounded-2xl border border-stone-950/10 bg-white/70 px-5 py-3 shadow-sm">
+        <div className="mt-5 inline-flex flex-wrap gap-5 rounded-2xl border border-stone-950/10 bg-white/70 px-5 py-3 shadow-sm">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.14em] text-stone-500">
               Score
             </p>
             <p className="mt-1 text-2xl font-bold text-stone-950">{scoreLabel}</p>
           </div>
+          {unansweredAnswers > 0 ? (
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-stone-500">
+                {language === "es" ? "No respondidas" : "Unanswered"}
+              </p>
+              <p className="mt-1 text-2xl font-bold text-stone-950">{unansweredAnswers}</p>
+            </div>
+          ) : null}
         </div>
 
         {isClassicQuiz && selectedAnswerLabel && correctAnswerLabel ? (

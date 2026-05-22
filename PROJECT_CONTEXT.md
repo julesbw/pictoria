@@ -175,6 +175,8 @@ Garantías actuales:
 - Hay exactamente 4 opciones.
 - No hay opciones duplicadas.
 - El usuario no puede responder dos veces la misma pregunta.
+- Cada pregunta tiene un límite de 10 segundos.
+- Si se acaba el tiempo, cuenta como intento incorrecto.
 - Una respuesta correcta muestra explicación y permite avanzar.
 - Una respuesta correcta también muestra ficha breve con obra, autor y respuesta correcta.
 - En el modo clásico, una respuesta incorrecta termina la partida.
@@ -186,7 +188,7 @@ Garantías actuales:
 - La pantalla final del modo clásico permite abrir una tarjeta de resultado
   compartible con una pintura y el score de racha.
 - La pantalla final de los retos de 10 preguntas muestra cuántas respuestas
-  acertó el usuario.
+  acertó el usuario y cuántas quedaron sin responder.
 - La pantalla final de los retos de 10 preguntas permite abrir una tarjeta de resultado
   compartible con una pintura y el marcador. Al hacer clic en compartir, se
   elige una pintura aleatoria del reto, se genera el PNG y se abre grande en
@@ -255,11 +257,13 @@ Se persiste:
 
 - modo de quiz
 - ronda
-- score
+- score, incluyendo correctas, total y no respondidas
 - pregunta actual
 - opciones
 - respuesta correcta
 - respuesta seleccionada
+- timestamp de inicio de pregunta
+- estado de tiempo agotado
 - cola de obras para los retos de 10 preguntas
 - estado de completado
 

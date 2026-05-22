@@ -16,6 +16,7 @@ const quizSessionStorageKeys: Record<QuizMode, string> = {
 export interface QuizScore {
   correct: number;
   total: number;
+  unanswered: number;
 }
 
 export interface QuizSession {
@@ -24,6 +25,8 @@ export interface QuizSession {
   score: QuizScore;
   question: QuizQuestion;
   selectedAnswer: string | null;
+  questionStartedAt: number;
+  timedOut?: boolean;
   artworkQueue?: string[];
   completed?: boolean;
 }
@@ -37,6 +40,8 @@ interface StoredQuizSession {
   options: string[];
   correctAnswer: string;
   selectedAnswer: string | null;
+  questionStartedAt?: number;
+  timedOut?: boolean;
   artworkQueue?: string[];
   completed?: boolean;
 }
@@ -69,6 +74,8 @@ export function saveQuizSession(session: QuizSession) {
     options: session.question.options,
     correctAnswer: session.question.correct_answer,
     selectedAnswer: session.selectedAnswer,
+    questionStartedAt: session.questionStartedAt,
+    timedOut: session.timedOut,
     artworkQueue: session.artworkQueue,
     completed: session.completed,
   };
@@ -121,8 +128,9 @@ export function isActiveQuizSession(session: QuizSession) {
 
   if (session.mode === "classic") {
     return (
-      session.selectedAnswer === null ||
-      session.selectedAnswer === session.question.correct_answer
+      !session.timedOut &&
+      (session.selectedAnswer === null ||
+        session.selectedAnswer === session.question.correct_answer)
     );
   }
 
@@ -135,13 +143,16 @@ function isValidStoredSession(session: StoredQuizSession) {
     session.round >= 0 &&
     Number.isInteger(session.score?.correct) &&
     Number.isInteger(session.score?.total) &&
+    Number.isInteger(session.score?.unanswered ?? 0) &&
     session.score.correct >= 0 &&
+    (session.score.unanswered ?? 0) >= 0 &&
     session.score.total >= session.score.correct &&
+    session.score.total >= session.score.correct + (session.score.unanswered ?? 0) &&
     Array.isArray(session.options) &&
     session.options.length === 4 &&
     new Set(session.options).size === 4 &&
-    session.options.includes(session.correctAnswer)
-    && (session.selectedAnswer === null || session.options.includes(session.selectedAnswer)) &&
+    session.options.includes(session.correctAnswer) &&
+    (session.selectedAnswer === null || session.options.includes(session.selectedAnswer)) &&
     (session.mode === undefined ||
       session.mode === "classic" ||
       session.mode === "famous_10" ||
@@ -150,6 +161,9 @@ function isValidStoredSession(session: StoredQuizSession) {
     (session.artworkQueue === undefined ||
       (Array.isArray(session.artworkQueue) &&
         session.artworkQueue.every((artworkId) => typeof artworkId === "string"))) &&
+    (session.questionStartedAt === undefined ||
+      (Number.isFinite(session.questionStartedAt) && session.questionStartedAt > 0)) &&
+    (session.timedOut === undefined || typeof session.timedOut === "boolean") &&
     (session.completed === undefined || typeof session.completed === "boolean")
   );
 }
@@ -178,13 +192,18 @@ function loadQuizSessionFromKey(storageKey: string, mode?: QuizMode) {
     return {
       mode: sessionMode,
       round: parsed.round,
-      score: parsed.score,
+      score: {
+        ...parsed.score,
+        unanswered: parsed.score.unanswered ?? 0,
+      },
       question: {
         ...question,
         options: parsed.options,
         correct_answer: parsed.correctAnswer,
       },
       selectedAnswer: parsed.selectedAnswer ?? null,
+      questionStartedAt: parsed.questionStartedAt ?? Date.now(),
+      timedOut: parsed.timedOut ?? false,
       artworkQueue: parsed.artworkQueue,
       completed: parsed.completed ?? false,
     };

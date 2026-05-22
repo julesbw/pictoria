@@ -13,7 +13,8 @@ import type { QuizQuestion } from "@/types";
 
 interface ResultPanelProps {
   question: QuizQuestion;
-  selectedAnswer: string;
+  selectedAnswer: string | null;
+  timedOut?: boolean;
   onNext: () => void;
   buttonClassName?: string;
   nextLabel?: string;
@@ -22,12 +23,13 @@ interface ResultPanelProps {
 export function ResultPanel({
   question,
   selectedAnswer,
+  timedOut = false,
   onNext,
   buttonClassName,
   nextLabel,
 }: ResultPanelProps) {
   const { language } = useLanguage();
-  const isCorrect = selectedAnswer === question.correct_answer;
+  const isCorrect = !timedOut && selectedAnswer === question.correct_answer;
   const title = getLocalizedArtworkTitle(question.artwork, language);
   const description = getLocalizedArtworkDescription(question.artwork, language);
   const correctAnswer = getLocalizedQuizAnswer(
@@ -53,6 +55,8 @@ export function ResultPanel({
         >
           {isCorrect
             ? language === "es" ? "Correcto" : "Correct"
+            : timedOut
+              ? language === "es" ? "Tiempo agotado" : "Time's up"
             : language === "es" ? "Incorrecto" : "Incorrect"}
         </p>
         <h3 className="mt-1 font-serif text-2xl font-semibold">

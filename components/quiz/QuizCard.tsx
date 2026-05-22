@@ -23,6 +23,8 @@ interface QuizCardProps {
   correctAnswers: number;
   totalQuestions?: number;
   selectedAnswer: string | null;
+  timedOut?: boolean;
+  remainingSeconds: number;
   onAnswer: (answer: string, isCorrect: boolean) => void;
   onNext: () => void;
   onRestart: () => void;
@@ -35,6 +37,8 @@ export function QuizCard({
   correctAnswers,
   totalQuestions,
   selectedAnswer,
+  timedOut = false,
+  remainingSeconds,
   onAnswer,
   onNext,
   onRestart,
@@ -46,9 +50,10 @@ export function QuizCard({
   );
   const isTenQuestionQuiz = mode !== "classic";
   const isLastQuestion = Boolean(totalQuestions && round >= totalQuestions);
+  const questionFinished = selectedAnswer !== null || timedOut;
 
   function handleSelect(option: string) {
-    if (selectedAnswer) return;
+    if (questionFinished) return;
 
     onAnswer(option, option === question.correct_answer);
   }
@@ -81,9 +86,21 @@ export function QuizCard({
 
       <div className="flex min-h-full flex-col justify-center space-y-5">
         <div>
-          <p className={cn("text-sm font-bold uppercase tracking-[0.16em]", theme.accent)}>
-            {language === "es" ? "Observa y responde" : "Look and answer"}
-          </p>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className={cn("text-sm font-bold uppercase tracking-[0.16em]", theme.accent)}>
+              {language === "es" ? "Observa y responde" : "Look and answer"}
+            </p>
+            <p
+              className={cn(
+                "rounded-full border px-3 py-1 text-sm font-bold tabular-nums",
+                remainingSeconds <= 3 && !questionFinished
+                  ? "border-rose-200 bg-rose-50 text-rose-700"
+                  : "border-stone-950/10 bg-white/70 text-stone-700",
+              )}
+            >
+              {language === "es" ? "Tiempo" : "Time"}: {remainingSeconds}s
+            </p>
+          </div>
           <h1 className="mt-2 font-serif text-3xl font-semibold sm:text-4xl">
             {getLocalizedQuestionPrompt(question.question_type, language)}
           </h1>
@@ -96,7 +113,7 @@ export function QuizCard({
               option={option}
               label={getLocalizedQuizAnswer(question.question_type, option, language)}
               selected={selectedAnswer === option}
-              disabled={Boolean(selectedAnswer)}
+              disabled={questionFinished}
               isCorrect={option === question.correct_answer}
               onSelect={handleSelect}
             />
@@ -117,11 +134,12 @@ export function QuizCard({
                   : undefined
               }
             />
-          ) : selectedAnswer && isTenQuestionQuiz ? (
+          ) : (selectedAnswer || timedOut) && isTenQuestionQuiz ? (
             <ResultPanel
               key="result"
               question={question}
               selectedAnswer={selectedAnswer}
+              timedOut={timedOut}
               onNext={handleNext}
               buttonClassName={theme.button}
               nextLabel={
@@ -130,7 +148,7 @@ export function QuizCard({
                   : undefined
               }
             />
-          ) : selectedAnswer ? (
+          ) : selectedAnswer || timedOut ? (
             <GameOverPanel
               key="game-over"
               roundReached={round}
@@ -138,6 +156,7 @@ export function QuizCard({
               selectedAnswer={selectedAnswer}
               correctAnswer={question.correct_answer}
               questionType={question.question_type}
+              timedOut={timedOut}
               onRestart={handleRestart}
               buttonClassName={theme.button}
             />

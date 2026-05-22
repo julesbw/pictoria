@@ -78,6 +78,7 @@ Modo clásico:
 - El home muestra dos CTAs principales: `Jugar Clásico` y `Jugar Quiz`.
 - `Jugar Clásico` cambia a `Reanudar` solo si hay una sesión clásica activa con
   progreso real; una sesión recién creada en ronda 1 sin respuestas no cuenta.
+- Cada pregunta tiene un límite de 10 segundos.
 - Una respuesta incorrecta termina la partida.
 - La pantalla final muestra ronda alcanzada, respuesta elegida, respuesta
   correcta y score de racha, por ejemplo `3 aciertos seguidos`.
@@ -91,8 +92,9 @@ Retos de 10 preguntas:
 - Interesado se entra desde `/quiz?mode=interested` y usa dificultad media.
 - Amante del Arte se entra desde `/quiz?mode=art-lover` y prioriza dificultad alta.
 - Cada reto recorre 10 obras.
+- Cada pregunta tiene un límite de 10 segundos.
 - Los errores no terminan la partida.
-- Al final muestra cuántas respuestas acertaste.
+- Al final muestra cuántas respuestas acertaste y cuántas quedaron sin responder.
 - Permite generar una tarjeta compartible con una pintura aleatoria del reto.
 - La tarjeta se abre grande en pantalla y se puede descargar como PNG o compartir
   con las opciones nativas del dispositivo.

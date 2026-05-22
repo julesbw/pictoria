@@ -12,6 +12,7 @@ import {
   generateQuizQuestion,
   generateRandomQuizQuestion,
 } from "@/lib/quiz";
+import { useQuestionTimer } from "@/lib/quiz-timer";
 import {
   clearQuizSession,
   isActiveQuizSession,
@@ -74,9 +75,11 @@ function createClassicSession(): QuizSession {
   return {
     mode: "classic",
     round: 0,
-    score: { correct: 0, total: 0 },
+    score: { correct: 0, total: 0, unanswered: 0 },
     question: generateRandomQuizQuestion(artworks),
     selectedAnswer: null,
+    questionStartedAt: Date.now(),
+    timedOut: false,
     completed: false,
   };
 }
@@ -99,9 +102,11 @@ function createTenQuestionQuizSession(mode: (typeof tenQuestionQuizModes)[number
   return {
     mode,
     round: 0,
-    score: { correct: 0, total: 0 },
+    score: { correct: 0, total: 0, unanswered: 0 },
     question: generateQuizQuestion(quizArtworks[0], artworks),
     selectedAnswer: null,
+    questionStartedAt: Date.now(),
+    timedOut: false,
     artworkQueue: quizArtworks.map((artwork) => artwork.id),
     completed: false,
   };
@@ -124,14 +129,17 @@ function createCompletedTenQuestionQuizSession(
   const quizArtworks = getTenQuestionQuizArtworks(mode);
   const finalArtwork = quizArtworks[quizArtworks.length - 1];
   const total = quizArtworks.length;
-  const correct = Math.floor(Math.random() * (total + 1));
+  const unanswered = Math.floor(Math.random() * 3);
+  const correct = Math.floor(Math.random() * (total - unanswered + 1));
 
   return {
     mode,
     round: total - 1,
-    score: { correct, total },
+    score: { correct, total, unanswered },
     question: generateQuizQuestion(finalArtwork, artworks),
     selectedAnswer: null,
+    questionStartedAt: Date.now(),
+    timedOut: false,
     artworkQueue: quizArtworks.map((artwork) => artwork.id),
     completed: true,
   };
@@ -161,10 +169,17 @@ export default function QuizPage() {
   const tenQuestionSessionMode = isTenQuestionQuizMode(session.mode) ? session.mode : null;
   const totalQuestions = tenQuestionSessionMode ? session.artworkQueue?.length ?? 10 : undefined;
   const theme = getArtTheme(session.question.artwork.movement?.theme_key);
+  const questionFinished = session.selectedAnswer !== null || Boolean(session.timedOut);
   const isClassicGameOver =
     session.mode === "classic" &&
-    session.selectedAnswer !== null &&
-    session.selectedAnswer !== session.question.correct_answer;
+    (session.timedOut ||
+      (session.selectedAnswer !== null &&
+        session.selectedAnswer !== session.question.correct_answer));
+  const { remainingSeconds } = useQuestionTimer({
+    startedAt: session.questionStartedAt,
+    isRunning: hydrated && !questionFinished && !session.completed,
+    onExpire: handleTimeExpired,
+  });
 
   useEffect(() => {
     const requestedMode = getRequestedQuizMode();
@@ -191,14 +206,36 @@ export default function QuizPage() {
 
   function handleAnswer(answer: string, isCorrect: boolean) {
     setSession((current) => {
-      if (current.selectedAnswer || current.completed) return current;
+      if (current.selectedAnswer || current.timedOut || current.completed) return current;
 
       const nextSession = {
         ...current,
         selectedAnswer: answer,
+        timedOut: false,
         score: {
           correct: current.score.correct + (isCorrect ? 1 : 0),
           total: current.score.total + 1,
+          unanswered: current.score.unanswered,
+        },
+      };
+
+      saveQuizSession(nextSession);
+      return nextSession;
+    });
+  }
+
+  function handleTimeExpired() {
+    setSession((current) => {
+      if (current.selectedAnswer || current.timedOut || current.completed) return current;
+
+      const nextSession = {
+        ...current,
+        selectedAnswer: null,
+        timedOut: true,
+        score: {
+          correct: current.score.correct,
+          total: current.score.total + 1,
+          unanswered: current.score.unanswered + 1,
         },
       };
 
@@ -226,6 +263,8 @@ export default function QuizPage() {
           ...current,
           question: getNextTenQuestionQuizQuestion(current, nextRound),
           selectedAnswer: null,
+          timedOut: false,
+          questionStartedAt: Date.now(),
           round: nextRound,
         };
 
@@ -237,6 +276,8 @@ export default function QuizPage() {
         ...current,
         question: generateRandomQuizQuestion(artworks),
         selectedAnswer: null,
+        timedOut: false,
+        questionStartedAt: Date.now(),
         round: current.round + 1,
       };
 
@@ -305,11 +346,13 @@ export default function QuizPage() {
             mode="classic"
             correctAnswers={session.score.correct}
             totalAnswers={session.score.total}
+            unansweredAnswers={session.score.unanswered}
             roundReached={session.round + 1}
             artwork={session.question.artwork}
             questionType={session.question.question_type}
             selectedAnswer={session.selectedAnswer}
             correctAnswer={session.question.correct_answer}
+            timedOut={session.timedOut}
             onRestart={handleRestart}
             buttonClassName={theme.button}
           />
@@ -318,6 +361,7 @@ export default function QuizPage() {
             mode={tenQuestionSessionMode}
             correctAnswers={session.score.correct}
             totalAnswers={session.score.total}
+            unansweredAnswers={session.score.unanswered}
             artwork={session.question.artwork}
             shareArtworks={getQueuedArtworks(session)}
             shareCardSubtitle={tenQuestionQuizConfig[tenQuestionSessionMode].shareTitle[language]}
@@ -332,6 +376,8 @@ export default function QuizPage() {
             correctAnswers={session.score.correct}
             totalQuestions={totalQuestions}
             selectedAnswer={session.selectedAnswer}
+            timedOut={session.timedOut}
+            remainingSeconds={remainingSeconds}
             onAnswer={handleAnswer}
             onNext={handleNextQuestion}
             onRestart={handleRestart}

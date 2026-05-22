@@ -9,9 +9,10 @@ import type { QuestionType } from "@/types";
 interface GameOverPanelProps {
   roundReached: number;
   correctAnswers: number;
-  selectedAnswer: string;
+  selectedAnswer: string | null;
   correctAnswer: string;
   questionType: QuestionType;
+  timedOut?: boolean;
   onRestart: () => void;
   buttonClassName?: string;
 }
@@ -22,11 +23,16 @@ export function GameOverPanel({
   selectedAnswer,
   correctAnswer,
   questionType,
+  timedOut = false,
   onRestart,
   buttonClassName,
 }: GameOverPanelProps) {
   const { language } = useLanguage();
-  const selectedLabel = getLocalizedQuizAnswer(questionType, selectedAnswer, language);
+  const selectedLabel = timedOut
+    ? language === "es" ? "Tiempo agotado" : "Time's up"
+    : selectedAnswer
+      ? getLocalizedQuizAnswer(questionType, selectedAnswer, language)
+      : language === "es" ? "Sin respuesta" : "No answer";
   const correctLabel = getLocalizedQuizAnswer(questionType, correctAnswer, language);
 
   return (
@@ -46,8 +52,8 @@ export function GameOverPanel({
       </h2>
       <p className="mt-2 text-sm leading-6 text-stone-700">
         {language === "es"
-          ? `Respuestas correctas antes del error: ${correctAnswers}. Reinicia para intentar superar tu marca.`
-          : `Correct answers before the mistake: ${correctAnswers}. Restart to try to beat your score.`}
+          ? `Respuestas correctas antes de fallar: ${correctAnswers}. Reinicia para intentar superar tu marca.`
+          : `Correct answers before missing: ${correctAnswers}. Restart to try to beat your score.`}
       </p>
 
       <div className="mt-5 grid gap-3 rounded-2xl border border-stone-950/10 bg-white/70 p-4 text-sm">
