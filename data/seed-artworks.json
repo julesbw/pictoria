@@ -1,0 +1,752 @@
+[
+  {
+    "id": "artwork-starry-night",
+    "title": "The Starry Night",
+    "artist_id": "artist-van-gogh",
+    "movement_id": "movement-post-impressionism",
+    "year": "1889",
+    "image_url": "/artworks/artwork-starry-night.jpg",
+    "description": "Van Gogh pintó este cielo turbulento desde su estancia en Saint-Rémy. La obra convierte el paisaje nocturno en una experiencia emocional, con remolinos de color y luz que parecen moverse.",
+    "difficulty": "easy",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-van-gogh",
+      "name": "Vincent van Gogh",
+      "nationality": "Dutch",
+      "birth_year": 1853,
+      "death_year": 1890
+    },
+    "movement": {
+      "id": "movement-post-impressionism",
+      "name": "Post-Impressionism",
+      "theme_key": "post_impressionism"
+    },
+    "wikimedia_file": "Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg"
+  },
+  {
+    "id": "artwork-sunflowers",
+    "title": "Sunflowers",
+    "artist_id": "artist-van-gogh",
+    "movement_id": "movement-post-impressionism",
+    "year": "1888",
+    "image_url": "/artworks/artwork-sunflowers.jpg",
+    "description": "La serie de girasoles resume el interés de Van Gogh por el color como lenguaje expresivo. Los amarillos intensos transmiten energía, hospitalidad y una vitalidad casi física.",
+    "difficulty": "easy",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-van-gogh",
+      "name": "Vincent van Gogh",
+      "nationality": "Dutch",
+      "birth_year": 1853,
+      "death_year": 1890
+    },
+    "movement": {
+      "id": "movement-post-impressionism",
+      "name": "Post-Impressionism",
+      "theme_key": "post_impressionism"
+    },
+    "wikimedia_file": "Vincent_Willem_van_Gogh_127.jpg"
+  },
+  {
+    "id": "artwork-mona-lisa",
+    "title": "Mona Lisa",
+    "artist_id": "artist-da-vinci",
+    "movement_id": "movement-renaissance",
+    "year": "c. 1503-1506",
+    "image_url": "/artworks/artwork-mona-lisa.jpg",
+    "description": "La enigmática expresión de Lisa Gherardini, el sfumato y el paisaje profundo hacen de esta pintura un emblema del retrato renacentista y de la observación psicológica.",
+    "difficulty": "easy",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-da-vinci",
+      "name": "Leonardo da Vinci",
+      "nationality": "Italian",
+      "birth_year": 1452,
+      "death_year": 1519
+    },
+    "movement": {
+      "id": "movement-renaissance",
+      "name": "Renaissance",
+      "theme_key": "renaissance"
+    },
+    "wikimedia_file": "Mona_Lisa.jpg"
+  },
+  {
+    "id": "artwork-birth-of-venus",
+    "title": "The Birth of Venus",
+    "artist_id": "artist-botticelli",
+    "movement_id": "movement-renaissance",
+    "year": "c. 1485",
+    "image_url": "/artworks/artwork-birth-of-venus.jpg",
+    "description": "Botticelli representa el nacimiento mítico de Venus con líneas elegantes y una belleza idealizada. La obra conecta mitología clásica y cultura humanista florentina.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-botticelli",
+      "name": "Sandro Botticelli",
+      "nationality": "Italian",
+      "birth_year": 1445,
+      "death_year": 1510
+    },
+    "movement": {
+      "id": "movement-renaissance",
+      "name": "Renaissance",
+      "theme_key": "renaissance"
+    },
+    "wikimedia_file": "Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg"
+  },
+  {
+    "id": "artwork-persistence-memory",
+    "title": "The Persistence of Memory",
+    "artist_id": "artist-dali",
+    "movement_id": "movement-surrealism",
+    "year": "1931",
+    "image_url": "/artworks/artwork-persistence-memory.jpg",
+    "description": "Los relojes blandos de Dalí transforman el tiempo en materia flexible. La escena combina precisión técnica con una lógica de sueño, típica del surrealismo.",
+    "difficulty": "easy",
+    "public_domain": false,
+    "source": "Wikimedia Commons fair-use reference",
+    "artist": {
+      "id": "artist-dali",
+      "name": "Salvador Dalí",
+      "nationality": "Spanish",
+      "birth_year": 1904,
+      "death_year": 1989
+    },
+    "movement": {
+      "id": "movement-surrealism",
+      "name": "Surrealism",
+      "theme_key": "surrealism"
+    },
+    "wikimedia_file": "The_Persistence_of_Memory.jpg"
+  },
+  {
+    "id": "artwork-guernica",
+    "title": "Guernica",
+    "artist_id": "artist-picasso",
+    "movement_id": "movement-cubism",
+    "year": "1937",
+    "image_url": "/artworks/artwork-guernica.jpg",
+    "description": "Picasso pintó Guernica como respuesta al bombardeo de la ciudad vasca. La composición fragmentada y monocroma convierte el dolor civil en una denuncia visual universal.",
+    "difficulty": "medium",
+    "public_domain": false,
+    "source": "Wikimedia Commons fair-use reference",
+    "artist": {
+      "id": "artist-picasso",
+      "name": "Pablo Picasso",
+      "nationality": "Spanish",
+      "birth_year": 1881,
+      "death_year": 1973
+    },
+    "movement": {
+      "id": "movement-cubism",
+      "name": "Cubism",
+      "theme_key": "cubism"
+    },
+    "wikimedia_file": "PicassoGuernica.jpg"
+  },
+  {
+    "id": "artwork-girl-pearl",
+    "title": "Girl with a Pearl Earring",
+    "artist_id": "artist-vermeer",
+    "movement_id": "movement-baroque",
+    "year": "c. 1665",
+    "image_url": "/artworks/artwork-girl-pearl.jpg",
+    "description": "Más que un retrato formal, esta tronie de Vermeer estudia luz, gesto y presencia. El pendiente actúa como foco luminoso dentro de una composición íntima.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-vermeer",
+      "name": "Johannes Vermeer",
+      "nationality": "Dutch",
+      "birth_year": 1632,
+      "death_year": 1675
+    },
+    "movement": {
+      "id": "movement-baroque",
+      "name": "Baroque",
+      "theme_key": "baroque"
+    },
+    "wikimedia_file": "Meisje_met_de_parel.jpg"
+  },
+  {
+    "id": "artwork-the-scream",
+    "title": "The Scream",
+    "artist_id": "artist-munch",
+    "movement_id": "movement-modernism",
+    "year": "1893",
+    "image_url": "/artworks/artwork-the-scream.jpg",
+    "description": "Munch condensa ansiedad moderna en una figura que parece vibrar con el paisaje. El cielo rojo y las líneas ondulantes vuelven visible una emoción extrema.",
+    "difficulty": "easy",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-munch",
+      "name": "Edvard Munch",
+      "nationality": "Norwegian",
+      "birth_year": 1863,
+      "death_year": 1944
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    },
+    "wikimedia_file": "The_Scream.jpg"
+  },
+  {
+    "id": "artwork-impression-sunrise",
+    "title": "Impression, Sunrise",
+    "artist_id": "artist-monet",
+    "movement_id": "movement-impressionism",
+    "year": "1872",
+    "image_url": "/artworks/artwork-impression-sunrise.jpg",
+    "description": "Esta pintura dio nombre al impresionismo. Monet privilegia la sensación luminosa del puerto sobre el detalle académico, con pinceladas rápidas y atmósfera cambiante.",
+    "difficulty": "easy",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-monet",
+      "name": "Claude Monet",
+      "nationality": "French",
+      "birth_year": 1840,
+      "death_year": 1926
+    },
+    "movement": {
+      "id": "movement-impressionism",
+      "name": "Impressionism",
+      "theme_key": "impressionism"
+    },
+    "wikimedia_file": "Claude_Monet,_Impression,_soleil_levant.jpg"
+  },
+  {
+    "id": "artwork-water-lilies",
+    "title": "Water Lilies",
+    "artist_id": "artist-monet",
+    "movement_id": "movement-impressionism",
+    "year": "1916",
+    "image_url": "/artworks/artwork-water-lilies.jpg",
+    "description": "En sus nenúfares, Monet convierte el jardín en un campo de color y reflejos. La superficie del agua borra fronteras entre cielo, luz y vegetación.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-monet",
+      "name": "Claude Monet",
+      "nationality": "French",
+      "birth_year": 1840,
+      "death_year": 1926
+    },
+    "movement": {
+      "id": "movement-impressionism",
+      "name": "Impressionism",
+      "theme_key": "impressionism"
+    },
+    "wikimedia_file": "Claude_Monet_-_Water_Lilies_-_1906,_Ryerson.jpg"
+  },
+  {
+    "id": "artwork-las-meninas",
+    "title": "Las Meninas",
+    "artist_id": "artist-velazquez",
+    "movement_id": "movement-baroque",
+    "year": "1656",
+    "image_url": "/artworks/cache/artwork-las-meninas.jpg",
+    "wikimedia_file": "Las_Meninas_01.jpg",
+    "description": "Velázquez construye una escena de corte llena de miradas cruzadas. El cuadro juega con el lugar del espectador, el pintor y la familia real, convirtiendo el retrato en una reflexión sobre la representación.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-velazquez",
+      "name": "Diego Velázquez",
+      "nationality": "Spanish",
+      "birth_year": 1599,
+      "death_year": 1660
+    },
+    "movement": {
+      "id": "movement-baroque",
+      "name": "Baroque",
+      "theme_key": "baroque"
+    }
+  },
+  {
+    "id": "artwork-night-watch",
+    "title": "The Night Watch",
+    "artist_id": "artist-rembrandt",
+    "movement_id": "movement-baroque",
+    "year": "1642",
+    "image_url": "/artworks/cache/artwork-night-watch.jpg",
+    "wikimedia_file": "La_ronda_de_noche,_por_Rembrandt_van_Rijn.jpg",
+    "description": "Rembrandt transforma un retrato colectivo en una escena dramática de movimiento, luz y jerarquía. La composición parece capturar a la milicia justo antes de ponerse en marcha.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-rembrandt",
+      "name": "Rembrandt van Rijn",
+      "nationality": "Dutch",
+      "birth_year": 1606,
+      "death_year": 1669
+    },
+    "movement": {
+      "id": "movement-baroque",
+      "name": "Baroque",
+      "theme_key": "baroque"
+    }
+  },
+  {
+    "id": "artwork-the-kiss",
+    "title": "The Kiss",
+    "artist_id": "artist-klimt",
+    "movement_id": "movement-modernism",
+    "year": "1907-1908",
+    "image_url": "/artworks/cache/artwork-the-kiss.jpg",
+    "wikimedia_file": "The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg",
+    "description": "Klimt combina ornamentación dorada, planos decorativos y una escena íntima. La obra pertenece a su periodo dorado y une erotismo, simbolismo y diseño ornamental.",
+    "difficulty": "easy",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-klimt",
+      "name": "Gustav Klimt",
+      "nationality": "Austrian",
+      "birth_year": 1862,
+      "death_year": 1918
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-liberty-leading",
+    "title": "Liberty Leading the People",
+    "artist_id": "artist-delacroix",
+    "movement_id": "movement-modernism",
+    "year": "1830",
+    "image_url": "/artworks/cache/artwork-liberty-leading.jpg",
+    "wikimedia_file": "Eugène_Delacroix_-_La_liberté_guidant_le_peuple.jpg",
+    "description": "Delacroix personifica la libertad como una figura que guía al pueblo entre humo, cuerpos y banderas. La pintura mezcla historia reciente, alegoría política y energía romántica.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-delacroix",
+      "name": "Eugène Delacroix",
+      "nationality": "French",
+      "birth_year": 1798,
+      "death_year": 1863
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-great-wave",
+    "title": "The Great Wave off Kanagawa",
+    "artist_id": "artist-hokusai",
+    "movement_id": "movement-modernism",
+    "year": "c. 1831",
+    "image_url": "/artworks/cache/artwork-great-wave.jpg",
+    "wikimedia_file": "Great_Wave_off_Kanagawa2.jpg",
+    "description": "Hokusai representa una ola monumental que amenaza pequeñas barcas bajo el monte Fuji. La estampa muestra la fuerza de la naturaleza y la precisión gráfica del ukiyo-e.",
+    "difficulty": "easy",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-hokusai",
+      "name": "Katsushika Hokusai",
+      "nationality": "Japanese",
+      "birth_year": 1760,
+      "death_year": 1849
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-school-athens",
+    "title": "The School of Athens",
+    "artist_id": "artist-raphael",
+    "movement_id": "movement-renaissance",
+    "year": "1509-1511",
+    "image_url": "/artworks/cache/artwork-school-athens.jpg",
+    "wikimedia_file": "The_School_of_Athens_by_Raffaello_Sanzio_da_Urbino.jpg",
+    "description": "Rafael reúne a filósofos clásicos en una arquitectura ideal. La perspectiva, el equilibrio y las referencias intelectuales resumen la ambición humanista del Renacimiento.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-raphael",
+      "name": "Raphael",
+      "nationality": "Italian",
+      "birth_year": 1483,
+      "death_year": 1520
+    },
+    "movement": {
+      "id": "movement-renaissance",
+      "name": "Renaissance",
+      "theme_key": "renaissance"
+    }
+  },
+  {
+    "id": "artwork-creation-adam",
+    "title": "The Creation of Adam",
+    "artist_id": "artist-michelangelo",
+    "movement_id": "movement-renaissance",
+    "year": "c. 1512",
+    "image_url": "/artworks/cache/artwork-creation-adam.jpg",
+    "wikimedia_file": "Michelangelo_-_Creation_of_Adam_(cropped).jpg",
+    "description": "Miguel Ángel condensa el relato bíblico en el casi contacto entre dos dedos. La tensión del gesto convierte la creación en una imagen de energía, cuerpo y espíritu.",
+    "difficulty": "easy",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-michelangelo",
+      "name": "Michelangelo",
+      "nationality": "Italian",
+      "birth_year": 1475,
+      "death_year": 1564
+    },
+    "movement": {
+      "id": "movement-renaissance",
+      "name": "Renaissance",
+      "theme_key": "renaissance"
+    }
+  },
+  {
+    "id": "artwork-arnolfini",
+    "title": "Arnolfini Portrait",
+    "artist_id": "artist-van-eyck",
+    "movement_id": "movement-renaissance",
+    "year": "1434",
+    "image_url": "/artworks/cache/artwork-arnolfini.jpg",
+    "wikimedia_file": "Van_Eyck_-_Arnolfini_Portrait.jpg",
+    "description": "Van Eyck usa detalle minucioso, símbolos domésticos y un espejo convexo para construir una escena cargada de significado. Es una obra clave del óleo flamenco temprano.",
+    "difficulty": "hard",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-van-eyck",
+      "name": "Jan van Eyck",
+      "nationality": "Flemish",
+      "birth_year": 1390,
+      "death_year": 1441
+    },
+    "movement": {
+      "id": "movement-renaissance",
+      "name": "Renaissance",
+      "theme_key": "renaissance"
+    }
+  },
+  {
+    "id": "artwork-fighting-temeraire",
+    "title": "The Fighting Temeraire",
+    "artist_id": "artist-turner",
+    "movement_id": "movement-modernism",
+    "year": "1839",
+    "image_url": "/artworks/cache/artwork-fighting-temeraire.jpg",
+    "wikimedia_file": "The_Fighting_Temeraire,_JMW_Turner,_National_Gallery.jpg",
+    "description": "Turner muestra un antiguo buque de guerra remolcado hacia el desguace. El atardecer convierte el episodio industrial en una meditación sobre memoria, progreso y pérdida.",
+    "difficulty": "hard",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-turner",
+      "name": "J. M. W. Turner",
+      "nationality": "British",
+      "birth_year": 1775,
+      "death_year": 1851
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-ophelia",
+    "title": "Ophelia",
+    "artist_id": "artist-millais",
+    "movement_id": "movement-modernism",
+    "year": "1851-1852",
+    "image_url": "/artworks/cache/artwork-ophelia.jpg",
+    "wikimedia_file": "John_Everett_Millais_-_Ophelia_-_Google_Art_Project.jpg",
+    "description": "Millais representa a Ofelia rodeada de vegetación detallada y agua quieta. La belleza botánica contrasta con la tragedia literaria tomada de Shakespeare.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-millais",
+      "name": "John Everett Millais",
+      "nationality": "British",
+      "birth_year": 1829,
+      "death_year": 1896
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-the-swing",
+    "title": "The Swing",
+    "artist_id": "artist-fragonard",
+    "movement_id": "movement-baroque",
+    "year": "1767",
+    "image_url": "/artworks/cache/artwork-the-swing.jpg",
+    "wikimedia_file": "Fragonard,_The_Swing.jpg",
+    "description": "Fragonard crea una escena rococó de juego, deseo y teatralidad. El movimiento del columpio, los tonos rosados y la vegetación refuerzan el carácter ligero y secreto de la imagen.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-fragonard",
+      "name": "Jean-Honoré Fragonard",
+      "nationality": "French",
+      "birth_year": 1732,
+      "death_year": 1806
+    },
+    "movement": {
+      "id": "movement-baroque",
+      "name": "Baroque",
+      "theme_key": "baroque"
+    }
+  },
+  {
+    "id": "artwork-third-may",
+    "title": "The Third of May 1808",
+    "artist_id": "artist-goya",
+    "movement_id": "movement-modernism",
+    "year": "1814",
+    "image_url": "/artworks/cache/artwork-third-may.jpg",
+    "wikimedia_file": "El_Tres_de_Mayo,_by_Francisco_de_Goya,_from_Prado_thin_black_margin.jpg",
+    "description": "Goya denuncia la violencia de la guerra con una escena nocturna de fusilamiento. La luz ilumina a la víctima central y vuelve la pintura una acusación moral directa.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-goya",
+      "name": "Francisco Goya",
+      "nationality": "Spanish",
+      "birth_year": 1746,
+      "death_year": 1828
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-whistlers-mother",
+    "title": "Whistler's Mother",
+    "artist_id": "artist-whistler",
+    "movement_id": "movement-modernism",
+    "year": "1871",
+    "image_url": "/artworks/cache/artwork-whistlers-mother.jpg",
+    "wikimedia_file": "Whistlers_Mother_high_res.jpg",
+    "description": "Whistler organiza el retrato de su madre con austeridad, perfil y armonías tonales. La obra se mueve entre imagen familiar y experimento formal de composición.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-whistler",
+      "name": "James McNeill Whistler",
+      "nationality": "American",
+      "birth_year": 1834,
+      "death_year": 1903
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-hay-wain",
+    "title": "The Hay Wain",
+    "artist_id": "artist-constable",
+    "movement_id": "movement-modernism",
+    "year": "1821",
+    "image_url": "/artworks/cache/artwork-hay-wain.jpg",
+    "wikimedia_file": "John_Constable_The_Hay_Wain.jpg",
+    "description": "Constable pinta un paisaje rural inglés con atención al cielo, el agua y la vida cotidiana. La escena parece tranquila, pero también construye una idea cultural de lo campestre.",
+    "difficulty": "hard",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-constable",
+      "name": "John Constable",
+      "nationality": "British",
+      "birth_year": 1776,
+      "death_year": 1837
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-ambassadors",
+    "title": "The Ambassadors",
+    "artist_id": "artist-holbein",
+    "movement_id": "movement-renaissance",
+    "year": "1533",
+    "image_url": "/artworks/cache/artwork-ambassadors.jpg",
+    "wikimedia_file": "Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg",
+    "description": "Holbein combina retrato, objetos científicos y una calavera anamórfica. La pintura celebra conocimiento y estatus, pero también recuerda la fragilidad de la vida.",
+    "difficulty": "hard",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-holbein",
+      "name": "Hans Holbein the Younger",
+      "nationality": "German-Swiss",
+      "birth_year": 1497,
+      "death_year": 1543
+    },
+    "movement": {
+      "id": "movement-renaissance",
+      "name": "Renaissance",
+      "theme_key": "renaissance"
+    }
+  },
+  {
+    "id": "artwork-sleeping-gypsy",
+    "title": "The Sleeping Gypsy",
+    "artist_id": "artist-rousseau",
+    "movement_id": "movement-modernism",
+    "year": "1897",
+    "image_url": "/artworks/cache/artwork-sleeping-gypsy.jpg",
+    "wikimedia_file": "Henri_Rousseau_010.jpg",
+    "description": "Rousseau imagina una escena nocturna extraña y silenciosa: una figura dormida, un león curioso y un paisaje desértico. Su estilo ingenuo produce una atmósfera casi surreal.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-rousseau",
+      "name": "Henri Rousseau",
+      "nationality": "French",
+      "birth_year": 1844,
+      "death_year": 1910
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  },
+  {
+    "id": "artwork-sunday-afternoon",
+    "title": "A Sunday Afternoon on the Island of La Grande Jatte",
+    "artist_id": "artist-seurat",
+    "movement_id": "movement-post-impressionism",
+    "year": "1884-1886",
+    "image_url": "/artworks/cache/artwork-sunday-afternoon.jpg",
+    "wikimedia_file": "A_Sunday_on_La_Grande_Jatte,_Georges_Seurat,_1884.png",
+    "description": "Seurat construye la escena con puntos de color cuidadosamente ordenados. El puntillismo convierte el ocio moderno en una composición casi científica de luz y percepción.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-seurat",
+      "name": "Georges Seurat",
+      "nationality": "French",
+      "birth_year": 1859,
+      "death_year": 1891
+    },
+    "movement": {
+      "id": "movement-post-impressionism",
+      "name": "Post-Impressionism",
+      "theme_key": "post_impressionism"
+    }
+  },
+  {
+    "id": "artwork-milkmaid",
+    "title": "The Milkmaid",
+    "artist_id": "artist-vermeer",
+    "movement_id": "movement-baroque",
+    "year": "c. 1658",
+    "image_url": "/artworks/cache/artwork-milkmaid.jpg",
+    "wikimedia_file": "Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg",
+    "description": "Vermeer transforma una tarea doméstica en una escena de concentración luminosa. La luz lateral, el pan y la jarra dan monumentalidad silenciosa a lo cotidiano.",
+    "difficulty": "medium",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-vermeer",
+      "name": "Johannes Vermeer",
+      "nationality": "Dutch",
+      "birth_year": 1632,
+      "death_year": 1675
+    },
+    "movement": {
+      "id": "movement-baroque",
+      "name": "Baroque",
+      "theme_key": "baroque"
+    }
+  },
+  {
+    "id": "artwork-garden-delights",
+    "title": "The Garden of Earthly Delights",
+    "artist_id": "artist-bosch",
+    "movement_id": "movement-renaissance",
+    "year": "c. 1490-1510",
+    "image_url": "/artworks/cache/artwork-garden-delights.jpg",
+    "wikimedia_file": "The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg",
+    "description": "Bosch despliega un tríptico lleno de criaturas, placeres y castigos. La obra combina imaginación fantástica, moral religiosa y una densidad visual que invita a explorar detalle por detalle.",
+    "difficulty": "hard",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-bosch",
+      "name": "Hieronymus Bosch",
+      "nationality": "Dutch",
+      "birth_year": 1450,
+      "death_year": 1516
+    },
+    "movement": {
+      "id": "movement-renaissance",
+      "name": "Renaissance",
+      "theme_key": "renaissance"
+    }
+  },
+  {
+    "id": "artwork-madame-x",
+    "title": "Madame X",
+    "artist_id": "artist-sargent",
+    "movement_id": "movement-modernism",
+    "year": "1884",
+    "image_url": "/artworks/cache/artwork-madame-x.jpg",
+    "wikimedia_file": "Madame_X_(Madame_Pierre_Gautreau),_John_Singer_Sargent,_1884_(unfree_frame_crop).jpg",
+    "description": "Sargent retrata a Virginie Gautreau con elegancia severa y teatral. La pose, el contraste del vestido negro y la piel pálida causaron escándalo y fascinación en el París de la época.",
+    "difficulty": "hard",
+    "public_domain": true,
+    "source": "Wikimedia Commons",
+    "artist": {
+      "id": "artist-sargent",
+      "name": "John Singer Sargent",
+      "nationality": "American",
+      "birth_year": 1856,
+      "death_year": 1925
+    },
+    "movement": {
+      "id": "movement-modernism",
+      "name": "Modernism",
+      "theme_key": "modernism"
+    }
+  }
+]
