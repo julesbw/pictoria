@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/components/language/LanguageProvider";
@@ -28,8 +29,19 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-30 border-b border-white/40 bg-white/70 backdrop-blur-xl">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link href="/" className="font-serif text-2xl font-semibold tracking-normal text-stone-950">
-          Pictoria
+        <Link
+          href="/"
+          className="flex items-center gap-2 font-serif text-2xl font-semibold tracking-normal text-stone-950"
+        >
+          <Image
+            src="/brand/pictoria-icon.png"
+            alt=""
+            width={40}
+            height={40}
+            priority
+            className="h-10 w-10 rounded-xl shadow-sm"
+          />
+          <span>Pictoria</span>
         </Link>
         <div className="flex items-center gap-1 rounded-full bg-stone-950/5 p-1">
           {links[language].map((link) => {
