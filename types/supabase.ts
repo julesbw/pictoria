@@ -1,0 +1,250 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[];
+
+export interface Database {
+  public: {
+    Tables: {
+      artists: {
+        Row: {
+          id: string;
+          name: string;
+          nationality: string | null;
+          birth_year: number | null;
+          death_year: number | null;
+          bio: string | null;
+          fun_fact: string | null;
+          image_url: string | null;
+        };
+        Insert: {
+          id: string;
+          name: string;
+          nationality?: string | null;
+          birth_year?: number | null;
+          death_year?: number | null;
+          bio?: string | null;
+          fun_fact?: string | null;
+          image_url?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["artists"]["Insert"]>;
+        Relationships: [];
+      };
+      artworks: {
+        Row: {
+          id: string;
+          title: string;
+          artist_id: string;
+          movement_id: string;
+          year: string | null;
+          image_url: string;
+          wikimedia_file: string | null;
+          description: string;
+          difficulty: "easy" | "medium" | "hard";
+          public_domain: boolean;
+          source: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id: string;
+          title: string;
+          artist_id: string;
+          movement_id: string;
+          year?: string | null;
+          image_url: string;
+          wikimedia_file?: string | null;
+          description: string;
+          difficulty: "easy" | "medium" | "hard";
+          public_domain?: boolean;
+          source?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["artworks"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "artworks_artist_id_fkey";
+            columns: ["artist_id"];
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "artworks_movement_id_fkey";
+            columns: ["movement_id"];
+            referencedRelation: "movements";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      favorites: {
+        Row: {
+          user_id: string;
+          artwork_id: string;
+          created_at: string;
+        };
+        Insert: {
+          user_id: string;
+          artwork_id: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["favorites"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "favorites_artwork_id_fkey";
+            columns: ["artwork_id"];
+            referencedRelation: "artworks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "favorites_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      movements: {
+        Row: {
+          id: string;
+          name: string;
+          description: string | null;
+          theme_key: string;
+        };
+        Insert: {
+          id: string;
+          name: string;
+          description?: string | null;
+          theme_key: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["movements"]["Insert"]>;
+        Relationships: [];
+      };
+      profiles: {
+        Row: {
+          id: string;
+          display_name: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id: string;
+          display_name?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
+        Relationships: [];
+      };
+      quiz_results: {
+        Row: {
+          id: string;
+          user_id: string;
+          session_id: string | null;
+          mode: "classic" | "famous_10" | "interested_10" | "art_lover_10" | "vs";
+          score_correct: number;
+          score_total: number;
+          score_unanswered: number;
+          round_reached: number | null;
+          final_artwork_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          session_id?: string | null;
+          mode: "classic" | "famous_10" | "interested_10" | "art_lover_10" | "vs";
+          score_correct: number;
+          score_total: number;
+          score_unanswered?: number;
+          round_reached?: number | null;
+          final_artwork_id?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["quiz_results"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "quiz_results_final_artwork_id_fkey";
+            columns: ["final_artwork_id"];
+            referencedRelation: "artworks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "quiz_results_session_id_fkey";
+            columns: ["session_id"];
+            referencedRelation: "quiz_sessions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "quiz_results_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      quiz_sessions: {
+        Row: {
+          id: string;
+          user_id: string;
+          mode: "classic" | "famous_10" | "interested_10" | "art_lover_10" | "vs";
+          round: number;
+          score_correct: number;
+          score_total: number;
+          score_unanswered: number;
+          current_artwork_id: string;
+          current_question_type: "guess_artist" | "guess_artwork" | "guess_movement";
+          current_options: string[];
+          current_correct_answer: string;
+          selected_answer: string | null;
+          question_started_at: string;
+          timed_out: boolean;
+          artwork_queue: string[] | null;
+          completed: boolean;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          mode: "classic" | "famous_10" | "interested_10" | "art_lover_10" | "vs";
+          round?: number;
+          score_correct?: number;
+          score_total?: number;
+          score_unanswered?: number;
+          current_artwork_id: string;
+          current_question_type: "guess_artist" | "guess_artwork" | "guess_movement";
+          current_options: string[];
+          current_correct_answer: string;
+          selected_answer?: string | null;
+          question_started_at?: string;
+          timed_out?: boolean;
+          artwork_queue?: string[] | null;
+          completed?: boolean;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["quiz_sessions"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "quiz_sessions_current_artwork_id_fkey";
+            columns: ["current_artwork_id"];
+            referencedRelation: "artworks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "quiz_sessions_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+    };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: {
+      difficulty: "easy" | "medium" | "hard";
+      match_status: "waiting" | "active" | "completed" | "cancelled";
+      question_type: "guess_artist" | "guess_artwork" | "guess_movement";
+      quiz_mode: "classic" | "famous_10" | "interested_10" | "art_lover_10" | "vs";
+    };
+    CompositeTypes: Record<string, never>;
+  };
+}

@@ -1,6 +1,9 @@
 import { artworks, getArtworkById } from "@/lib/artworks";
 import { generateQuizQuestion } from "@/lib/quiz";
+import { getSupabaseUserId } from "@/lib/supabase/auth";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { QuizQuestion, QuestionType } from "@/types";
+import type { Database } from "@/types/supabase";
 
 const legacyStorageKey = "pictoria:quiz-session";
 
@@ -62,6 +65,22 @@ export function loadQuizSession(mode?: QuizMode) {
   return null;
 }
 
+export async function loadQuizSessionHybrid(mode?: QuizMode) {
+  const localSession = loadQuizSession(mode);
+  const remoteSession = await loadQuizSessionFromSupabase(mode);
+
+  if (remoteSession) {
+    saveQuizSession(remoteSession);
+    return remoteSession;
+  }
+
+  if (localSession) {
+    await saveQuizSessionToSupabase(localSession);
+  }
+
+  return localSession;
+}
+
 export function saveQuizSession(session: QuizSession) {
   if (typeof window === "undefined") return;
 
@@ -87,6 +106,11 @@ export function saveQuizSession(session: QuizSession) {
   window.localStorage.removeItem(legacyStorageKey);
 }
 
+export async function saveQuizSessionHybrid(session: QuizSession) {
+  saveQuizSession(session);
+  await saveQuizSessionToSupabase(session);
+}
+
 export function hasActiveQuizSession(mode?: QuizMode) {
   if (!mode) {
     return (Object.keys(quizSessionStorageKeys) as QuizMode[]).some((quizMode) => {
@@ -99,8 +123,23 @@ export function hasActiveQuizSession(mode?: QuizMode) {
   return Boolean(session && isActiveQuizSession(session));
 }
 
+export async function hasActiveQuizSessionHybrid(mode?: QuizMode) {
+  const session = await loadQuizSessionHybrid(mode);
+  return Boolean(session && isActiveQuizSession(session));
+}
+
 export function hasResumableQuizSession(mode: QuizMode) {
   const session = loadQuizSession(mode);
+
+  return Boolean(
+    session &&
+      isActiveQuizSession(session) &&
+      (session.round > 0 || session.score.total > 0),
+  );
+}
+
+export async function hasResumableQuizSessionHybrid(mode: QuizMode) {
+  const session = await loadQuizSessionHybrid(mode);
 
   return Boolean(
     session &&
@@ -121,6 +160,11 @@ export function clearQuizSession(mode?: QuizMode) {
     window.localStorage.removeItem(storageKey);
   });
   window.localStorage.removeItem(legacyStorageKey);
+}
+
+export async function clearQuizSessionHybrid(mode?: QuizMode) {
+  clearQuizSession(mode);
+  await clearQuizSessionFromSupabase(mode);
 }
 
 export function isActiveQuizSession(session: QuizSession) {
@@ -222,4 +266,133 @@ function migrateLegacySession(
 
   window.localStorage.setItem(quizSessionStorageKeys[sessionMode], storedSession);
   window.localStorage.removeItem(legacyStorageKey);
+}
+
+type QuizSessionRow = Database["public"]["Tables"]["quiz_sessions"]["Row"];
+type QuizSessionUpsert = Database["public"]["Tables"]["quiz_sessions"]["Insert"];
+
+async function loadQuizSessionFromSupabase(mode?: QuizMode) {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return null;
+
+  try {
+    const userId = await getSupabaseUserId();
+    if (!userId) return null;
+
+    let query = supabase
+      .from("quiz_sessions")
+      .select("*")
+      .eq("user_id", userId)
+      .order("updated_at", { ascending: false });
+
+    if (mode) {
+      query = query.eq("mode", mode);
+    }
+
+    const { data, error } = await query.limit(1);
+    if (error || !data?.[0]) return null;
+
+    return quizSessionFromRow(data[0]);
+  } catch {
+    return null;
+  }
+}
+
+async function saveQuizSessionToSupabase(session: QuizSession) {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return;
+
+  try {
+    const userId = await getSupabaseUserId();
+    if (!userId) return;
+
+    const payload: QuizSessionUpsert = {
+      user_id: userId,
+      mode: session.mode,
+      round: session.round,
+      score_correct: session.score.correct,
+      score_total: session.score.total,
+      score_unanswered: session.score.unanswered,
+      current_artwork_id: session.question.artwork.id,
+      current_question_type: session.question.question_type,
+      current_options: session.question.options,
+      current_correct_answer: session.question.correct_answer,
+      selected_answer: session.selectedAnswer,
+      question_started_at: new Date(session.questionStartedAt).toISOString(),
+      timed_out: session.timedOut ?? false,
+      artwork_queue: session.artworkQueue ?? null,
+      completed: session.completed ?? false,
+    };
+
+    await supabase.from("quiz_sessions").upsert(payload, {
+      onConflict: "user_id,mode",
+    });
+  } catch {
+    // Keep localStorage as the source of truth until Supabase is reachable.
+  }
+}
+
+async function clearQuizSessionFromSupabase(mode?: QuizMode) {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return;
+
+  try {
+    const userId = await getSupabaseUserId();
+    if (!userId) return;
+
+    let query = supabase.from("quiz_sessions").delete().eq("user_id", userId);
+
+    if (mode) {
+      query = query.eq("mode", mode);
+    }
+
+    await query;
+  } catch {
+    // Local clear already happened; remote can catch up on the next save.
+  }
+}
+
+function quizSessionFromRow(row: QuizSessionRow): QuizSession | null {
+  const artwork = getArtworkById(row.current_artwork_id);
+
+  if (!artwork) return null;
+
+  const storedSession: StoredQuizSession = {
+    mode: row.mode === "vs" ? "classic" : row.mode,
+    round: row.round,
+    score: {
+      correct: row.score_correct,
+      total: row.score_total,
+      unanswered: row.score_unanswered,
+    },
+    artworkId: row.current_artwork_id,
+    questionType: row.current_question_type,
+    options: row.current_options,
+    correctAnswer: row.current_correct_answer,
+    selectedAnswer: row.selected_answer,
+    questionStartedAt: new Date(row.question_started_at).getTime(),
+    timedOut: row.timed_out,
+    artworkQueue: row.artwork_queue ?? undefined,
+    completed: row.completed,
+  };
+
+  if (!isValidStoredSession(storedSession)) return null;
+
+  const question = generateQuizQuestion(artwork, artworks, storedSession.questionType);
+
+  return {
+    mode: storedSession.mode ?? "classic",
+    round: storedSession.round,
+    score: storedSession.score,
+    question: {
+      ...question,
+      options: storedSession.options,
+      correct_answer: storedSession.correctAnswer,
+    },
+    selectedAnswer: storedSession.selectedAnswer,
+    questionStartedAt: storedSession.questionStartedAt ?? Date.now(),
+    timedOut: storedSession.timedOut ?? false,
+    artworkQueue: storedSession.artworkQueue,
+    completed: storedSession.completed ?? false,
+  };
 }

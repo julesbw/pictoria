@@ -1,11 +1,63 @@
 import seedArtworks from "@/data/seed-artworks.json";
 import { artistProfiles } from "@/lib/artist-profiles";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { Artwork, Difficulty, MovementThemeKey } from "@/types";
 
 export const artworks = seedArtworks as Artwork[];
 
+type SupabaseArtworkRow = {
+  id: string;
+  title: string;
+  artist_id: string;
+  movement_id: string;
+  year: string | null;
+  image_url: string;
+  wikimedia_file: string | null;
+  description: string;
+  difficulty: Difficulty;
+  public_domain: boolean;
+  source: string | null;
+  artist: {
+    id: string;
+    name: string;
+    nationality: string | null;
+    birth_year: number | null;
+    death_year: number | null;
+    bio: string | null;
+    fun_fact: string | null;
+    image_url: string | null;
+  } | null;
+  movement: {
+    id: string;
+    name: string;
+    description: string | null;
+    theme_key: string;
+  } | null;
+};
+
 export function getRandomArtworks(count: number) {
   const shuffled = [...artworks];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+
+  return shuffled.slice(0, count);
+}
+
+export async function getArtworksHybrid() {
+  const remoteArtworks = await getArtworksFromSupabase();
+
+  return remoteArtworks.length > 0 ? remoteArtworks : artworks;
+}
+
+export async function getRandomArtworksHybrid(count: number) {
+  return getRandomArtworksFrom(await getArtworksHybrid(), count);
+}
+
+export function getRandomArtworksFrom(sourceArtworks: Artwork[], count: number) {
+  const shuffled = [...sourceArtworks];
 
   for (let index = shuffled.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
@@ -19,10 +71,10 @@ export function getArtworkById(id: string) {
   return artworks.find((artwork) => artwork.id === id);
 }
 
-export function getArtists() {
+export function getArtists(sourceArtworks: Artwork[] = artworks) {
   return Array.from(
     new Map(
-      artworks
+      sourceArtworks
         .filter((artwork) => artwork.artist)
         .map((artwork) => [
           artwork.artist!.id,
@@ -57,10 +109,10 @@ export function getPrimaryMovementThemeForArtist(id: string): MovementThemeKey |
   return Array.from(movementCounts.entries()).sort((a, b) => b[1] - a[1])[0]?.[0];
 }
 
-export function getMovements() {
+export function getMovements(sourceArtworks: Artwork[] = artworks) {
   return Array.from(
     new Map(
-      artworks
+      sourceArtworks
         .filter((artwork) => artwork.movement)
         .map((artwork) => [artwork.movement!.id, artwork.movement!]),
     ).values(),
@@ -71,8 +123,8 @@ export function filterArtworks(filters: {
   artistId?: string;
   movementKey?: MovementThemeKey;
   difficulty?: Difficulty;
-}) {
-  return artworks.filter((artwork) => {
+}, sourceArtworks: Artwork[] = artworks) {
+  return sourceArtworks.filter((artwork) => {
     const artistMatches = filters.artistId
       ? artwork.artist_id === filters.artistId
       : true;
@@ -85,4 +137,59 @@ export function filterArtworks(filters: {
 
     return artistMatches && movementMatches && difficultyMatches;
   });
+}
+
+async function getArtworksFromSupabase() {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return [];
+
+  try {
+    const { data, error } = await supabase
+      .from("artworks")
+      .select("*, artist:artists(*), movement:movements(*)")
+      .order("title", { ascending: true });
+
+    if (error || !data) return [];
+
+    return (data as SupabaseArtworkRow[]).map(mapSupabaseArtwork);
+  } catch {
+    return [];
+  }
+}
+
+function mapSupabaseArtwork(row: SupabaseArtworkRow): Artwork {
+  return {
+    id: row.id,
+    title: row.title,
+    artist_id: row.artist_id,
+    movement_id: row.movement_id,
+    year: row.year ?? undefined,
+    image_url: row.image_url,
+    wikimedia_file: row.wikimedia_file ?? undefined,
+    description: row.description,
+    difficulty: row.difficulty,
+    public_domain: row.public_domain,
+    source: row.source ?? undefined,
+    artist: row.artist
+      ? {
+          id: row.artist.id,
+          name: row.artist.name,
+          nationality: row.artist.nationality ?? undefined,
+          birth_year: row.artist.birth_year ?? undefined,
+          death_year: row.artist.death_year ?? undefined,
+          bio: row.artist.bio ?? undefined,
+          fun_fact: row.artist.fun_fact ?? undefined,
+          image_url: row.artist.image_url ?? undefined,
+          ...artistProfiles[row.artist.id],
+        }
+      : undefined,
+    movement: row.movement
+      ? {
+          id: row.movement.id,
+          name: row.movement.name,
+          description: row.movement.description ?? undefined,
+          theme_key: row.movement.theme_key as MovementThemeKey,
+        }
+      : undefined,
+  };
 }

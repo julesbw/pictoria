@@ -6,7 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import { ArtworkCard } from "@/components/artwork/ArtworkCard";
 import { LanguageToggle } from "@/components/language/LanguageToggle";
 import { useLanguage } from "@/components/language/LanguageProvider";
-import { hasActiveQuizSession, hasResumableQuizSession } from "@/lib/quiz-session";
+import {
+  hasActiveQuizSessionHybrid,
+  hasResumableQuizSessionHybrid,
+} from "@/lib/quiz-session";
 import type { Artwork } from "@/types";
 
 interface HomeContentProps {
@@ -79,10 +82,34 @@ export function HomeContent({ featuredArtworks }: HomeContentProps) {
   const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
 
   useEffect(() => {
-    setHasActiveClassicSession(hasResumableQuizSession("classic"));
-    setHasActiveFamousSession(hasActiveQuizSession("famous_10"));
-    setHasActiveInterestedSession(hasActiveQuizSession("interested_10"));
-    setHasActiveArtLoverSession(hasActiveQuizSession("art_lover_10"));
+    let cancelled = false;
+
+    async function syncQuizSessions() {
+      const [
+        hasClassicSession,
+        hasFamousSession,
+        hasInterestedSession,
+        hasArtLoverSession,
+      ] = await Promise.all([
+        hasResumableQuizSessionHybrid("classic"),
+        hasActiveQuizSessionHybrid("famous_10"),
+        hasActiveQuizSessionHybrid("interested_10"),
+        hasActiveQuizSessionHybrid("art_lover_10"),
+      ]);
+
+      if (cancelled) return;
+
+      setHasActiveClassicSession(hasClassicSession);
+      setHasActiveFamousSession(hasFamousSession);
+      setHasActiveInterestedSession(hasInterestedSession);
+      setHasActiveArtLoverSession(hasArtLoverSession);
+    }
+
+    syncQuizSessions();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {

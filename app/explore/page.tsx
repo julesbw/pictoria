@@ -1,10 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArtworkCard } from "@/components/artwork/ArtworkCard";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import { AppShell } from "@/components/layout/AppShell";
-import { artworks, filterArtworks, getArtists, getMovements } from "@/lib/artworks";
+import {
+  artworks,
+  filterArtworks,
+  getArtists,
+  getArtworksHybrid,
+  getMovements,
+} from "@/lib/artworks";
 import { getLocalizedMovementName } from "@/lib/localization";
 import type { Difficulty, MovementThemeKey } from "@/types";
 
@@ -12,17 +18,18 @@ const difficulties: Difficulty[] = ["easy", "medium", "hard"];
 
 export default function ExplorePage() {
   const { language } = useLanguage();
+  const [catalogArtworks, setCatalogArtworks] = useState(artworks);
   const [artistId, setArtistId] = useState("");
   const [movementKey, setMovementKey] = useState("");
   const [difficulty, setDifficulty] = useState("");
 
-  const artists = useMemo(() => getArtists(), []);
-  const movements = useMemo(() => getMovements(), []);
+  const artists = useMemo(() => getArtists(catalogArtworks), [catalogArtworks]);
+  const movements = useMemo(() => getMovements(catalogArtworks), [catalogArtworks]);
   const filteredArtworks = filterArtworks({
     artistId: artistId || undefined,
     movementKey: (movementKey || undefined) as MovementThemeKey | undefined,
     difficulty: (difficulty || undefined) as Difficulty | undefined,
-  });
+  }, catalogArtworks);
   const difficultyLabels: Record<Difficulty, string> =
     language === "es"
       ? { easy: "fácil", medium: "media", hard: "difícil" }
@@ -54,6 +61,20 @@ export default function ExplorePage() {
           allFemale: "All",
         };
 
+  useEffect(() => {
+    let cancelled = false;
+
+    getArtworksHybrid().then((nextArtworks) => {
+      if (!cancelled) {
+        setCatalogArtworks(nextArtworks);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <AppShell themeKey="modernism">
       <section className="space-y-6">
@@ -72,8 +93,8 @@ export default function ExplorePage() {
 
           <p className="rounded-full bg-white px-4 py-2 text-sm font-bold text-stone-700 shadow-sm">
             {language === "es"
-              ? `${filteredArtworks.length} de ${artworks.length} ${text.count}`
-              : `${filteredArtworks.length} of ${artworks.length} ${text.count}`}
+              ? `${filteredArtworks.length} de ${catalogArtworks.length} ${text.count}`
+              : `${filteredArtworks.length} of ${catalogArtworks.length} ${text.count}`}
           </p>
         </div>
 

@@ -16,8 +16,9 @@ import { useQuestionTimer } from "@/lib/quiz-timer";
 import {
   clearQuizSession,
   isActiveQuizSession,
-  loadQuizSession,
+  loadQuizSessionHybrid,
   saveQuizSession,
+  saveQuizSessionHybrid,
   type QuizMode,
   type QuizSession,
 } from "@/lib/quiz-session";
@@ -182,26 +183,40 @@ export default function QuizPage() {
   });
 
   useEffect(() => {
-    const requestedMode = getRequestedQuizMode();
-    const storedSession = loadQuizSession(requestedMode);
+    let cancelled = false;
 
-    if (storedSession && isActiveQuizSession(storedSession)) {
-      setSession(storedSession);
-    } else if (isTenQuestionQuizMode(requestedMode)) {
-      const nextSession = createTenQuestionQuizSession(requestedMode);
-      clearQuizSession(requestedMode);
-      saveQuizSession(nextSession);
-      setSession(nextSession);
-    } else if (storedSession) {
-      setSession(storedSession);
+    async function hydrateSession() {
+      const requestedMode = getRequestedQuizMode();
+      const storedSession = await loadQuizSessionHybrid(requestedMode);
+
+      if (cancelled) return;
+
+      if (storedSession && isActiveQuizSession(storedSession)) {
+        setSession(storedSession);
+      } else if (isTenQuestionQuizMode(requestedMode)) {
+        const nextSession = createTenQuestionQuizSession(requestedMode);
+        clearQuizSession(requestedMode);
+        saveQuizSession(nextSession);
+        void saveQuizSessionHybrid(nextSession);
+        setSession(nextSession);
+      } else if (storedSession) {
+        setSession(storedSession);
+      }
+
+      setHydrated(true);
     }
 
-    setHydrated(true);
+    hydrateSession();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
     if (!hydrated) return;
     saveQuizSession(session);
+    void saveQuizSessionHybrid(session);
   }, [hydrated, session]);
 
   function handleAnswer(answer: string, isCorrect: boolean) {
@@ -293,6 +308,7 @@ export default function QuizPage() {
 
     clearQuizSession(session.mode);
     saveQuizSession(nextSession);
+    void saveQuizSessionHybrid(nextSession);
     setSession(nextSession);
   }
 
@@ -303,6 +319,7 @@ export default function QuizPage() {
 
     clearQuizSession(nextSession.mode);
     saveQuizSession(nextSession);
+    void saveQuizSessionHybrid(nextSession);
     setSession(nextSession);
   }
 

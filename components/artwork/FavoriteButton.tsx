@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import {
-  isFavoriteArtwork,
+  getFavoriteIdsHybrid,
   subscribeToFavorites,
-  toggleFavoriteArtwork,
+  toggleFavoriteArtworkHybrid,
 } from "@/lib/favorites";
 import { cn } from "@/lib/utils";
 
@@ -25,17 +25,29 @@ export function FavoriteButton({ artworkId, className, compact = false }: Favori
       : { remove: "Remove from favorites", add: "Save to favorites", saved: "Saved", save: "Save" };
 
   useEffect(() => {
+    let cancelled = false;
+
     function syncFavoriteState() {
-      setIsFavorite(isFavoriteArtwork(artworkId));
+      getFavoriteIdsHybrid().then((favoriteIds) => {
+        if (!cancelled) {
+          setIsFavorite(favoriteIds.includes(artworkId));
+        }
+      });
     }
 
     syncFavoriteState();
-    return subscribeToFavorites(syncFavoriteState);
+    const unsubscribe = subscribeToFavorites(syncFavoriteState);
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, [artworkId]);
 
   function toggleFavorite() {
-    const nextFavorites = toggleFavoriteArtwork(artworkId);
-    setIsFavorite(nextFavorites.includes(artworkId));
+    toggleFavoriteArtworkHybrid(artworkId).then((nextFavorites) => {
+      setIsFavorite(nextFavorites.includes(artworkId));
+    });
   }
 
   return (

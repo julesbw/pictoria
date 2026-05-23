@@ -5,25 +5,38 @@ import { motion } from "framer-motion";
 import { ArtworkCard } from "@/components/artwork/ArtworkCard";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import { AppShell } from "@/components/layout/AppShell";
-import { artworks } from "@/lib/artworks";
-import { getFavoriteIds, subscribeToFavorites } from "@/lib/favorites";
+import { artworks, getArtworksHybrid } from "@/lib/artworks";
+import { getFavoriteIdsHybrid, subscribeToFavorites } from "@/lib/favorites";
 
 export default function GalleryPage() {
   const { language } = useLanguage();
+  const [catalogArtworks, setCatalogArtworks] = useState(artworks);
   const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+
     function syncFavorites() {
-      setFavoriteIds(getFavoriteIds());
-      setIsLoaded(true);
+      Promise.all([getFavoriteIdsHybrid(), getArtworksHybrid()]).then(([ids, nextArtworks]) => {
+        if (cancelled) return;
+
+        setFavoriteIds(ids);
+        setCatalogArtworks(nextArtworks);
+        setIsLoaded(true);
+      });
     }
 
     syncFavorites();
-    return subscribeToFavorites(syncFavorites);
+    const unsubscribe = subscribeToFavorites(syncFavorites);
+
+    return () => {
+      cancelled = true;
+      unsubscribe();
+    };
   }, []);
 
-  const favorites = artworks.filter((artwork) => favoriteIds.includes(artwork.id));
+  const favorites = catalogArtworks.filter((artwork) => favoriteIds.includes(artwork.id));
   const text =
     language === "es"
       ? {

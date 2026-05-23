@@ -13,8 +13,9 @@ movimiento, recibe contexto breve y puede guardar favoritos en una galería loca
 - Framer Motion
 - GSAP
 - Dataset local JSON
+- Supabase preparado para persistencia remota
 - Cache local de imágenes
-- `localStorage` para idioma, favoritos y sesión del quiz
+- `localStorage` para idioma y fallback temporal de favoritos/sesión del quiz
 
 ## Desarrollo
 
@@ -37,6 +38,7 @@ npm run dev:clean
 npm run build
 npm run lint
 npm run cache:images
+npm run seed:supabase
 npm run clean
 ```
 
@@ -121,11 +123,23 @@ La tarjeta compartible de los retos de 10 preguntas usa la ruta local `image_url
 carga como `Blob` antes de dibujarla en canvas. Esto evita fallos al probar desde
 teléfono mediante túneles como Cloudflare.
 
+## Supabase
+
+La integración inicial usa Supabase de forma incremental: favoritos y sesiones
+del quiz siguen guardándose en `localStorage`, pero se sincronizan con Supabase
+cuando `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` y Auth anónimo
+están disponibles.
+
+La migración vive en `supabase/migrations` y el seed del catálogo se corre con
+`npm run seed:supabase` usando `SUPABASE_SERVICE_ROLE_KEY`. En `.env.local`,
+`NEXT_PUBLIC_SUPABASE_URL` debe apuntar a la raíz del proyecto Supabase, por
+ejemplo `https://your-project.supabase.co`.
+
 ## Favoritos
 
-Los favoritos viven en `lib/favorites.ts` y se guardan en `localStorage` bajo
-`pictoria:favorites`. No se duplican y la galería se sincroniza con eventos
-locales.
+Los favoritos viven en `lib/favorites.ts`, se guardan en `localStorage` bajo
+`pictoria:favorites` y se sincronizan con Supabase si está configurado. No se
+duplican y la galería se sincroniza con eventos locales.
 
 ## Utilidades de desarrollo
 
@@ -135,8 +149,9 @@ pantalla final y la tarjeta de compartir sin responder las 10 preguntas.
 
 ## Estado del MVP
 
-Todavía no usa Supabase, autenticación, IA, rankings ni multijugador. El proyecto
-está pensado para mantenerse modular y migrar después a backend/storage real.
+Ya tiene una primera integración incremental con Supabase para favoritos y
+sesiones de quiz, con `localStorage` como fallback. Todavía no usa login visible,
+IA, rankings ni multijugador.
 
 Para contexto completo de decisiones, archivos importantes y próximos pasos, ver
 `PROJECT_CONTEXT.md`.

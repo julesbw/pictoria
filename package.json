@@ -7,6 +7,7 @@
     "dev:clean": "rm -rf .next && next dev",
     "build": "next build",
     "cache:images": "node scripts/cache-artwork-images.mjs",
+    "seed:supabase": "node scripts/seed-supabase.mjs",
     "clean": "rm -rf .next",
     "start": "next start",
     "lint": "next lint"
@@ -14,6 +15,7 @@
   "dependencies": {
     "@next/eslint-plugin-next": "^14.2.23",
     "@opentelemetry/api": "1.6.0",
+    "@supabase/supabase-js": "^2.106.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.2",
     "gsap": "^3.15.0",
