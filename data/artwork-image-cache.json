@@ -1,0 +1,270 @@
+{
+  "artwork-starry-night": {
+    "artwork_id": "artwork-starry-night",
+    "local_cached_url": "/artworks/artwork-starry-night.jpg",
+    "storage_path": "public/artworks/artwork-starry-night.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.027Z"
+  },
+  "artwork-sunflowers": {
+    "artwork_id": "artwork-sunflowers",
+    "local_cached_url": "/artworks/artwork-sunflowers.jpg",
+    "storage_path": "public/artworks/artwork-sunflowers.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-mona-lisa": {
+    "artwork_id": "artwork-mona-lisa",
+    "local_cached_url": "/artworks/artwork-mona-lisa.jpg",
+    "storage_path": "public/artworks/artwork-mona-lisa.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-birth-of-venus": {
+    "artwork_id": "artwork-birth-of-venus",
+    "local_cached_url": "/artworks/artwork-birth-of-venus.jpg",
+    "storage_path": "public/artworks/artwork-birth-of-venus.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-persistence-memory": {
+    "artwork_id": "artwork-persistence-memory",
+    "local_cached_url": "/artworks/artwork-persistence-memory.jpg",
+    "storage_path": "public/artworks/artwork-persistence-memory.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-guernica": {
+    "artwork_id": "artwork-guernica",
+    "local_cached_url": "/artworks/artwork-guernica.jpg",
+    "storage_path": "public/artworks/artwork-guernica.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-girl-pearl": {
+    "artwork_id": "artwork-girl-pearl",
+    "local_cached_url": "/artworks/artwork-girl-pearl.jpg",
+    "storage_path": "public/artworks/artwork-girl-pearl.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-the-scream": {
+    "artwork_id": "artwork-the-scream",
+    "local_cached_url": "/artworks/artwork-the-scream.jpg",
+    "storage_path": "public/artworks/artwork-the-scream.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-impression-sunrise": {
+    "artwork_id": "artwork-impression-sunrise",
+    "local_cached_url": "/artworks/artwork-impression-sunrise.jpg",
+    "storage_path": "public/artworks/artwork-impression-sunrise.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-water-lilies": {
+    "artwork_id": "artwork-water-lilies",
+    "local_cached_url": "/artworks/artwork-water-lilies.jpg",
+    "storage_path": "public/artworks/artwork-water-lilies.jpg",
+    "provider": "local",
+    "cached_at": "2026-05-13T00:14:11.032Z"
+  },
+  "artwork-las-meninas": {
+    "artwork_id": "artwork-las-meninas",
+    "local_cached_url": "/artworks/cache/artwork-las-meninas.jpg",
+    "storage_path": "public/artworks/cache/artwork-las-meninas.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/9/99/Las_Meninas_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Las_Meninas_01.jpg/960px-Las_Meninas_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "Diego Velázquez",
+    "cached_at": "2026-05-13T00:17:05.464Z"
+  },
+  "artwork-night-watch": {
+    "artwork_id": "artwork-night-watch",
+    "local_cached_url": "/artworks/cache/artwork-night-watch.jpg",
+    "storage_path": "public/artworks/cache/artwork-night-watch.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/3/3a/La_ronda_de_noche%2C_por_Rembrandt_van_Rijn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/La_ronda_de_noche%2C_por_Rembrandt_van_Rijn.jpg/960px-La_ronda_de_noche%2C_por_Rembrandt_van_Rijn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "Rembrandt",
+    "cached_at": "2026-05-13T00:17:06.886Z"
+  },
+  "artwork-the-kiss": {
+    "artwork_id": "artwork-the-kiss",
+    "local_cached_url": "/artworks/cache/artwork-the-kiss.jpg",
+    "storage_path": "public/artworks/cache/artwork-the-kiss.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/4/40/The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg/960px-The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "Gustav Klimt",
+    "cached_at": "2026-05-13T00:17:08.156Z"
+  },
+  "artwork-liberty-leading": {
+    "artwork_id": "artwork-liberty-leading",
+    "local_cached_url": "/artworks/cache/artwork-liberty-leading.jpg",
+    "storage_path": "public/artworks/cache/artwork-liberty-leading.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg/960px-Eug%C3%A8ne_Delacroix_-_La_libert%C3%A9_guidant_le_peuple.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "Eugène Delacroix",
+    "cached_at": "2026-05-13T00:17:09.493Z"
+  },
+  "artwork-great-wave": {
+    "artwork_id": "artwork-great-wave",
+    "local_cached_url": "/artworks/cache/artwork-great-wave.jpg",
+    "storage_path": "public/artworks/cache/artwork-great-wave.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Great_Wave_off_Kanagawa2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Great_Wave_off_Kanagawa2.jpg/960px-Great_Wave_off_Kanagawa2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "After Katsushika Hokusai",
+    "cached_at": "2026-05-13T00:17:10.767Z"
+  },
+  "artwork-school-athens": {
+    "artwork_id": "artwork-school-athens",
+    "local_cached_url": "/artworks/cache/artwork-school-athens.jpg",
+    "storage_path": "public/artworks/cache/artwork-school-athens.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/The_School_of_Athens_by_Raffaello_Sanzio_da_Urbino.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/The_School_of_Athens_by_Raffaello_Sanzio_da_Urbino.jpg/960px-The_School_of_Athens_by_Raffaello_Sanzio_da_Urbino.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "Raphael Sanzio",
+    "cached_at": "2026-05-13T00:17:13.349Z"
+  },
+  "artwork-creation-adam": {
+    "artwork_id": "artwork-creation-adam",
+    "local_cached_url": "/artworks/cache/artwork-creation-adam.jpg",
+    "storage_path": "public/artworks/cache/artwork-creation-adam.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg/960px-Michelangelo_-_Creation_of_Adam_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "Michelangelo",
+    "cached_at": "2026-05-13T00:17:14.569Z"
+  },
+  "artwork-fighting-temeraire": {
+    "artwork_id": "artwork-fighting-temeraire",
+    "local_cached_url": "/artworks/cache/artwork-fighting-temeraire.jpg",
+    "storage_path": "public/artworks/cache/artwork-fighting-temeraire.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/3/30/The_Fighting_Temeraire%2C_JMW_Turner%2C_National_Gallery.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/The_Fighting_Temeraire%2C_JMW_Turner%2C_National_Gallery.jpg/960px-The_Fighting_Temeraire%2C_JMW_Turner%2C_National_Gallery.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "J. M. W. Turner",
+    "cached_at": "2026-05-13T00:17:19.134Z"
+  },
+  "artwork-ophelia": {
+    "artwork_id": "artwork-ophelia",
+    "local_cached_url": "/artworks/cache/artwork-ophelia.jpg",
+    "storage_path": "public/artworks/cache/artwork-ophelia.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://upload.wikimedia.org/wikipedia/commons/9/94/John_Everett_Millais_-_Ophelia_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/John_Everett_Millais_-_Ophelia_-_Google_Art_Project.jpg/960px-John_Everett_Millais_-_Ophelia_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+    "license_short_name": "Public domain",
+    "artist_credit": "John Everett Millais",
+    "cached_at": "2026-05-13T00:17:20.311Z"
+  },
+  "artwork-arnolfini": {
+    "artwork_id": "artwork-arnolfini",
+    "local_cached_url": "/artworks/cache/artwork-arnolfini.jpg",
+    "storage_path": "public/artworks/cache/artwork-arnolfini.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Van_Eyck_-_Arnolfini_Portrait.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Van_Eyck_-_Arnolfini_Portrait.jpg/960px-Van_Eyck_-_Arnolfini_Portrait.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:28.988Z"
+  },
+  "artwork-the-swing": {
+    "artwork_id": "artwork-the-swing",
+    "local_cached_url": "/artworks/cache/artwork-the-swing.jpg",
+    "storage_path": "public/artworks/cache/artwork-the-swing.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Fragonard%2C_The_Swing.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Fragonard%2C_The_Swing.jpg/960px-Fragonard%2C_The_Swing.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:31.709Z"
+  },
+  "artwork-third-may": {
+    "artwork_id": "artwork-third-may",
+    "local_cached_url": "/artworks/cache/artwork-third-may.jpg",
+    "storage_path": "public/artworks/cache/artwork-third-may.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_thin_black_margin.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_thin_black_margin.jpg/960px-El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_thin_black_margin.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:34.358Z"
+  },
+  "artwork-whistlers-mother": {
+    "artwork_id": "artwork-whistlers-mother",
+    "local_cached_url": "/artworks/cache/artwork-whistlers-mother.jpg",
+    "storage_path": "public/artworks/cache/artwork-whistlers-mother.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Whistlers_Mother_high_res.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Whistlers_Mother_high_res.jpg/960px-Whistlers_Mother_high_res.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:37.034Z"
+  },
+  "artwork-hay-wain": {
+    "artwork_id": "artwork-hay-wain",
+    "local_cached_url": "/artworks/cache/artwork-hay-wain.jpg",
+    "storage_path": "public/artworks/cache/artwork-hay-wain.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/John_Constable_The_Hay_Wain.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/John_Constable_The_Hay_Wain.jpg/960px-John_Constable_The_Hay_Wain.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:39.998Z"
+  },
+  "artwork-ambassadors": {
+    "artwork_id": "artwork-ambassadors",
+    "local_cached_url": "/artworks/cache/artwork-ambassadors.jpg",
+    "storage_path": "public/artworks/cache/artwork-ambassadors.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg/960px-Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:42.691Z"
+  },
+  "artwork-sunday-afternoon": {
+    "artwork_id": "artwork-sunday-afternoon",
+    "local_cached_url": "/artworks/cache/artwork-sunday-afternoon.png",
+    "storage_path": "public/artworks/cache/artwork-sunday-afternoon.png",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.png?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.png/960px-A_Sunday_on_La_Grande_Jatte%2C_Georges_Seurat%2C_1884.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:48.133Z"
+  },
+  "artwork-milkmaid": {
+    "artwork_id": "artwork-milkmaid",
+    "local_cached_url": "/artworks/cache/artwork-milkmaid.jpg",
+    "storage_path": "public/artworks/cache/artwork-milkmaid.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg/960px-Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:50.789Z"
+  },
+  "artwork-garden-delights": {
+    "artwork_id": "artwork-garden-delights",
+    "local_cached_url": "/artworks/cache/artwork-garden-delights.jpg",
+    "storage_path": "public/artworks/cache/artwork-garden-delights.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg/960px-The_Garden_of_Earthly_Delights_by_Bosch_High_Resolution.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:53.450Z"
+  },
+  "artwork-madame-x": {
+    "artwork_id": "artwork-madame-x",
+    "local_cached_url": "/artworks/cache/artwork-madame-x.jpg",
+    "storage_path": "public/artworks/cache/artwork-madame-x.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Madame_X_(Madame_Pierre_Gautreau)%2C_John_Singer_Sargent%2C_1884_(unfree_frame_crop).jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Madame_X_%28Madame_Pierre_Gautreau%29%2C_John_Singer_Sargent%2C_1884_%28unfree_frame_crop%29.jpg/960px-Madame_X_%28Madame_Pierre_Gautreau%29%2C_John_Singer_Sargent%2C_1884_%28unfree_frame_crop%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:30:56.114Z"
+  },
+  "artwork-sleeping-gypsy": {
+    "artwork_id": "artwork-sleeping-gypsy",
+    "local_cached_url": "/artworks/cache/artwork-sleeping-gypsy.jpg",
+    "storage_path": "public/artworks/cache/artwork-sleeping-gypsy.jpg",
+    "provider": "wikimedia",
+    "source_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Henri_Rousseau_010.jpg?width=960",
+    "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Henri_Rousseau_010.jpg/960px-Henri_Rousseau_010.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    "cached_at": "2026-05-13T00:31:34.714Z"
+  }
+}

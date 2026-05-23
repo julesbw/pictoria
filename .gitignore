@@ -13,8 +13,7 @@ build/
 *.tsbuildinfo
 
 # Generated artwork image cache
-public/artworks/cache/
-data/artwork-image-cache.json
+# Keep committed so Vercel can serve pre-cached artwork images.
 
 # Environment files
 .env
