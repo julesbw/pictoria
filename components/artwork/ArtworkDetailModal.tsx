@@ -18,9 +18,17 @@ interface ArtworkDetailModalProps {
   artwork: Artwork;
   open: boolean;
   onClose: () => void;
+  isFavorite?: boolean;
+  onToggleFavorite?: (artworkId: string) => void | Promise<void>;
 }
 
-export function ArtworkDetailModal({ artwork, open, onClose }: ArtworkDetailModalProps) {
+export function ArtworkDetailModal({
+  artwork,
+  open,
+  onClose,
+  isFavorite,
+  onToggleFavorite,
+}: ArtworkDetailModalProps) {
   const { language } = useLanguage();
   const theme = getArtTheme(artwork.movement?.theme_key);
   const title = getLocalizedArtworkTitle(artwork, language);
@@ -104,7 +112,11 @@ export function ArtworkDetailModal({ artwork, open, onClose }: ArtworkDetailModa
                 >
                   {artwork.artist?.name ?? (language === "es" ? "Artista desconocido" : "Unknown artist")}
                 </Link>
-                <FavoriteButton artworkId={artwork.id} />
+                <FavoriteButton
+                  artworkId={artwork.id}
+                  isFavorite={isFavorite}
+                  onToggleFavorite={onToggleFavorite}
+                />
               </div>
 
               <p className={cn("mt-6 text-sm leading-7", theme.muted)}>

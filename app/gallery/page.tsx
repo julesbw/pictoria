@@ -6,37 +6,37 @@ import { ArtworkCard } from "@/components/artwork/ArtworkCard";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import { AppShell } from "@/components/layout/AppShell";
 import { artworks, getArtworksHybrid } from "@/lib/artworks";
-import { getFavoriteIdsHybrid, subscribeToFavorites } from "@/lib/favorites";
+import { useFavorites } from "@/lib/use-favorites";
 
 export default function GalleryPage() {
   const { language } = useLanguage();
   const [catalogArtworks, setCatalogArtworks] = useState(artworks);
-  const [favoriteIds, setFavoriteIds] = useState<string[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [artworksLoaded, setArtworksLoaded] = useState(false);
+  const {
+    error: favoriteError,
+    favoriteIds,
+    isFavorite,
+    isLoaded: favoritesLoaded,
+    toggleFavorite,
+  } = useFavorites();
 
   useEffect(() => {
     let cancelled = false;
 
-    function syncFavorites() {
-      Promise.all([getFavoriteIdsHybrid(), getArtworksHybrid()]).then(([ids, nextArtworks]) => {
-        if (cancelled) return;
-
-        setFavoriteIds(ids);
+    getArtworksHybrid().then((nextArtworks) => {
+      if (!cancelled) {
         setCatalogArtworks(nextArtworks);
-        setIsLoaded(true);
-      });
-    }
-
-    syncFavorites();
-    const unsubscribe = subscribeToFavorites(syncFavorites);
+        setArtworksLoaded(true);
+      }
+    });
 
     return () => {
       cancelled = true;
-      unsubscribe();
     };
   }, []);
 
-  const favorites = catalogArtworks.filter((artwork) => favoriteIds.includes(artwork.id));
+  const favorites = catalogArtworks.filter((artwork) => favoriteIds.has(artwork.id));
+  const isLoaded = artworksLoaded && favoritesLoaded;
   const text =
     language === "es"
       ? {
@@ -47,6 +47,7 @@ export default function GalleryPage() {
           emptyTitle: "Tu galería está vacía",
           emptyDescription:
             "Guarda obras desde el quiz o desde explorar. Aparecerán aquí al instante y podrás quitarlas con el botón de corazón.",
+          favoriteSyncError: "No se pudieron sincronizar los favoritos. Inténtalo de nuevo.",
         }
       : {
           eyebrow: "Local gallery",
@@ -56,6 +57,7 @@ export default function GalleryPage() {
           emptyTitle: "Your gallery is empty",
           emptyDescription:
             "Save artworks from the quiz or Explore. They will appear here instantly, and you can remove them with the heart button.",
+          favoriteSyncError: "Favorites could not be synced. Try again.",
         };
 
   return (
@@ -72,6 +74,12 @@ export default function GalleryPage() {
             {text.description}
           </p>
         </div>
+
+        {favoriteError ? (
+          <p className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
+            {text.favoriteSyncError}
+          </p>
+        ) : null}
 
         {!isLoaded ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -95,7 +103,12 @@ export default function GalleryPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
               >
-                <ArtworkCard artwork={artwork} showDescription />
+                <ArtworkCard
+                  artwork={artwork}
+                  showDescription
+                  isFavorite={isFavorite(artwork.id)}
+                  onToggleFavorite={toggleFavorite}
+                />
               </motion.div>
             ))}
           </motion.div>

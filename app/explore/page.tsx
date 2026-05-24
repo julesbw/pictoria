@@ -12,6 +12,7 @@ import {
   getMovements,
 } from "@/lib/artworks";
 import { getLocalizedMovementName } from "@/lib/localization";
+import { useFavorites } from "@/lib/use-favorites";
 import type { Difficulty, MovementThemeKey } from "@/types";
 
 const difficulties: Difficulty[] = ["easy", "medium", "hard"];
@@ -22,6 +23,11 @@ export default function ExplorePage() {
   const [artistId, setArtistId] = useState("");
   const [movementKey, setMovementKey] = useState("");
   const [difficulty, setDifficulty] = useState("");
+  const {
+    error: favoriteError,
+    isFavorite,
+    toggleFavorite,
+  } = useFavorites();
 
   const artists = useMemo(() => getArtists(catalogArtworks), [catalogArtworks]);
   const movements = useMemo(() => getMovements(catalogArtworks), [catalogArtworks]);
@@ -47,6 +53,7 @@ export default function ExplorePage() {
           difficulty: "Dificultad",
           all: "Todos",
           allFemale: "Todas",
+          favoriteSyncError: "No se pudieron sincronizar los favoritos. Inténtalo de nuevo.",
         }
       : {
           eyebrow: "Base collection",
@@ -59,6 +66,7 @@ export default function ExplorePage() {
           difficulty: "Difficulty",
           all: "All",
           allFemale: "All",
+          favoriteSyncError: "Favorites could not be synced. Try again.",
         };
 
   useEffect(() => {
@@ -148,9 +156,21 @@ export default function ExplorePage() {
           </label>
         </div>
 
+        {favoriteError ? (
+          <p className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
+            {text.favoriteSyncError}
+          </p>
+        ) : null}
+
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filteredArtworks.map((artwork) => (
-            <ArtworkCard key={artwork.id} artwork={artwork} showDescription />
+            <ArtworkCard
+              key={artwork.id}
+              artwork={artwork}
+              showDescription
+              isFavorite={isFavorite(artwork.id)}
+              onToggleFavorite={toggleFavorite}
+            />
           ))}
         </div>
       </section>

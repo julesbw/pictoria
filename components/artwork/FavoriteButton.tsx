@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import {
+  getFavoriteIds,
   getFavoriteIdsHybrid,
   subscribeToFavorites,
   toggleFavoriteArtworkHybrid,
@@ -14,40 +15,67 @@ interface FavoriteButtonProps {
   artworkId: string;
   className?: string;
   compact?: boolean;
+  isFavorite?: boolean;
+  onToggleFavorite?: (artworkId: string) => void | Promise<void>;
 }
 
-export function FavoriteButton({ artworkId, className, compact = false }: FavoriteButtonProps) {
+export function FavoriteButton({
+  artworkId,
+  className,
+  compact = false,
+  isFavorite: controlledIsFavorite,
+  onToggleFavorite,
+}: FavoriteButtonProps) {
   const { language } = useLanguage();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [localIsFavorite, setLocalIsFavorite] = useState(false);
+  const isControlled = controlledIsFavorite !== undefined;
+  const isFavorite = controlledIsFavorite ?? localIsFavorite;
   const labels =
     language === "es"
       ? { remove: "Quitar de favoritos", add: "Guardar en favoritos", saved: "Guardada", save: "Guardar" }
       : { remove: "Remove from favorites", add: "Save to favorites", saved: "Saved", save: "Save" };
 
   useEffect(() => {
+    if (isControlled) return;
+
     let cancelled = false;
 
-    function syncFavoriteState() {
-      getFavoriteIdsHybrid().then((favoriteIds) => {
-        if (!cancelled) {
-          setIsFavorite(favoriteIds.includes(artworkId));
-        }
-      });
-    }
+    getFavoriteIdsHybrid().then((favoriteIds) => {
+      if (!cancelled) {
+        setLocalIsFavorite(favoriteIds.includes(artworkId));
+      }
+    });
 
-    syncFavoriteState();
-    const unsubscribe = subscribeToFavorites(syncFavoriteState);
+    const unsubscribe = subscribeToFavorites(() => {
+      const favoriteIds = getFavoriteIds();
+
+      if (!cancelled) {
+        setLocalIsFavorite(favoriteIds.includes(artworkId));
+      }
+    });
 
     return () => {
       cancelled = true;
       unsubscribe();
     };
-  }, [artworkId]);
+  }, [artworkId, isControlled]);
 
   function toggleFavorite() {
-    toggleFavoriteArtworkHybrid(artworkId).then((nextFavorites) => {
-      setIsFavorite(nextFavorites.includes(artworkId));
-    });
+    if (onToggleFavorite) {
+      void Promise.resolve(onToggleFavorite(artworkId)).catch(() => {});
+      return;
+    }
+
+    const previousIsFavorite = isFavorite;
+    setLocalIsFavorite(!previousIsFavorite);
+
+    toggleFavoriteArtworkHybrid(artworkId)
+      .then((nextFavorites) => {
+        setLocalIsFavorite(nextFavorites.includes(artworkId));
+      })
+      .catch(() => {
+        setLocalIsFavorite(previousIsFavorite);
+      });
   }
 
   return (

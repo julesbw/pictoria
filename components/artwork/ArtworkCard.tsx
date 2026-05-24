@@ -20,6 +20,8 @@ interface ArtworkCardProps {
   enableHoverEffects?: boolean;
   enableDetailModal?: boolean;
   showFavoriteButton?: boolean;
+  isFavorite?: boolean;
+  onToggleFavorite?: (artworkId: string) => void | Promise<void>;
 }
 
 export function ArtworkCard({
@@ -28,6 +30,8 @@ export function ArtworkCard({
   enableHoverEffects = true,
   enableDetailModal = true,
   showFavoriteButton = true,
+  isFavorite,
+  onToggleFavorite,
 }: ArtworkCardProps) {
   const [detailOpen, setDetailOpen] = useState(false);
   const { language } = useLanguage();
@@ -77,7 +81,12 @@ export function ArtworkCard({
             </div>
             {showFavoriteButton ? (
               <div onClick={(event) => event.stopPropagation()}>
-                <FavoriteButton artworkId={artwork.id} compact />
+                <FavoriteButton
+                  artworkId={artwork.id}
+                  compact
+                  isFavorite={isFavorite}
+                  onToggleFavorite={onToggleFavorite}
+                />
               </div>
             ) : null}
           </div>
@@ -92,6 +101,8 @@ export function ArtworkCard({
           artwork={artwork}
           open={detailOpen}
           onClose={() => setDetailOpen(false)}
+          isFavorite={isFavorite}
+          onToggleFavorite={onToggleFavorite}
         />
       ) : null}
     </>
