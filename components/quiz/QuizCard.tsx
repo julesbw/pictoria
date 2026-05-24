@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { ArtworkImage } from "@/components/artwork/ArtworkImage";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import { AnswerOption } from "@/components/quiz/AnswerOption";
@@ -44,6 +44,7 @@ export function QuizCard({
   onRestart,
 }: QuizCardProps) {
   const { language } = useLanguage();
+  const resultRef = useRef<HTMLDivElement>(null);
   const theme = useMemo(
     () => getArtTheme(question.artwork.movement?.theme_key),
     [question.artwork.movement?.theme_key],
@@ -51,6 +52,23 @@ export function QuizCard({
   const isTenQuestionQuiz = mode !== "classic";
   const isLastQuestion = Boolean(totalQuestions && round >= totalQuestions);
   const questionFinished = selectedAnswer !== null || timedOut;
+
+  useEffect(() => {
+    if (!questionFinished || !resultRef.current) return;
+
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (!isMobile) return;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const animationFrame = window.requestAnimationFrame(() => {
+      resultRef.current?.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [questionFinished, question.artwork.id, question.question_type]);
 
   function handleSelect(option: string) {
     if (questionFinished) return;
@@ -120,48 +138,50 @@ export function QuizCard({
           ))}
         </div>
 
-        <AnimatePresence mode="wait">
-          {selectedAnswer && selectedAnswer === question.correct_answer ? (
-            <ResultPanel
-              key="result"
-              question={question}
-              selectedAnswer={selectedAnswer}
-              onNext={handleNext}
-              buttonClassName={theme.button}
-              nextLabel={
-                isTenQuestionQuiz && isLastQuestion
-                  ? language === "es" ? "Ver resultado" : "See result"
-                  : undefined
-              }
-            />
-          ) : (selectedAnswer || timedOut) && isTenQuestionQuiz ? (
-            <ResultPanel
-              key="result"
-              question={question}
-              selectedAnswer={selectedAnswer}
-              timedOut={timedOut}
-              onNext={handleNext}
-              buttonClassName={theme.button}
-              nextLabel={
-                isLastQuestion
-                  ? language === "es" ? "Ver resultado" : "See result"
-                  : undefined
-              }
-            />
-          ) : selectedAnswer || timedOut ? (
-            <GameOverPanel
-              key="game-over"
-              roundReached={round}
-              correctAnswers={correctAnswers}
-              selectedAnswer={selectedAnswer}
-              correctAnswer={question.correct_answer}
-              questionType={question.question_type}
-              timedOut={timedOut}
-              onRestart={handleRestart}
-              buttonClassName={theme.button}
-            />
-          ) : null}
-        </AnimatePresence>
+        <div ref={resultRef}>
+          <AnimatePresence mode="wait">
+            {selectedAnswer && selectedAnswer === question.correct_answer ? (
+              <ResultPanel
+                key="result"
+                question={question}
+                selectedAnswer={selectedAnswer}
+                onNext={handleNext}
+                buttonClassName={theme.button}
+                nextLabel={
+                  isTenQuestionQuiz && isLastQuestion
+                    ? language === "es" ? "Ver resultado" : "See result"
+                    : undefined
+                }
+              />
+            ) : (selectedAnswer || timedOut) && isTenQuestionQuiz ? (
+              <ResultPanel
+                key="result"
+                question={question}
+                selectedAnswer={selectedAnswer}
+                timedOut={timedOut}
+                onNext={handleNext}
+                buttonClassName={theme.button}
+                nextLabel={
+                  isLastQuestion
+                    ? language === "es" ? "Ver resultado" : "See result"
+                    : undefined
+                }
+              />
+            ) : selectedAnswer || timedOut ? (
+              <GameOverPanel
+                key="game-over"
+                roundReached={round}
+                correctAnswers={correctAnswers}
+                selectedAnswer={selectedAnswer}
+                correctAnswer={question.correct_answer}
+                questionType={question.question_type}
+                timedOut={timedOut}
+                onRestart={handleRestart}
+                buttonClassName={theme.button}
+              />
+            ) : null}
+          </AnimatePresence>
+        </div>
       </div>
     </motion.section>
   );
