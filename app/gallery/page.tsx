@@ -43,7 +43,7 @@ export default function GalleryPage() {
           eyebrow: "Galería local",
           title: "Tus obras favoritas",
           description:
-            "Esta colección vive temporalmente en `localStorage`. Más adelante puede migrarse a Supabase sin cambiar la experiencia principal.",
+            "Tu colección se sincroniza para que puedas volver a tus obras guardadas y seguir explorando desde cualquier sesión.",
           emptyTitle: "Tu galería está vacía",
           emptyDescription:
             "Guarda obras desde el quiz o desde explorar. Aparecerán aquí al instante y podrás quitarlas con el botón de corazón.",
@@ -53,7 +53,7 @@ export default function GalleryPage() {
           eyebrow: "Local gallery",
           title: "Your favorite artworks",
           description:
-            "This collection temporarily lives in `localStorage`. Later it can move to Supabase without changing the core experience.",
+            "Your collection stays synced so you can return to saved artworks and keep exploring from any session.",
           emptyTitle: "Your gallery is empty",
           emptyDescription:
             "Save artworks from the quiz or Explore. They will appear here instantly, and you can remove them with the heart button.",

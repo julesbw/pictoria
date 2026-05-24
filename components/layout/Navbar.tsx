@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -25,6 +26,12 @@ const links = {
 export function Navbar() {
   const pathname = usePathname();
   const { language } = useLanguage();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuId = "mobile-navigation";
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   return (
     <header className="sticky top-0 z-30 border-b border-white/40 bg-white/70 backdrop-blur-xl">
@@ -43,7 +50,24 @@ export function Navbar() {
           />
           <span>Pictoria</span>
         </Link>
-        <div className="flex items-center gap-1 rounded-full bg-stone-950/5 p-1">
+        <button
+          type="button"
+          aria-label={language === "es" ? "Abrir menú de navegación" : "Open navigation menu"}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls={mobileMenuId}
+          onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-950/5 text-stone-950 transition hover:bg-stone-950/10 focus:outline-none focus:ring-2 focus:ring-stone-950/20 md:hidden"
+        >
+          <span className="sr-only">
+            {language === "es" ? "Menú de navegación" : "Navigation menu"}
+          </span>
+          <span className="flex w-5 flex-col gap-1.5" aria-hidden="true">
+            <span className="h-0.5 rounded-full bg-current" />
+            <span className="h-0.5 rounded-full bg-current" />
+            <span className="h-0.5 rounded-full bg-current" />
+          </span>
+        </button>
+        <div className="hidden items-center gap-1 rounded-full bg-stone-950/5 p-1 md:flex">
           {links[language].map((link) => {
             const active = pathname === link.href;
             return (
@@ -68,6 +92,28 @@ export function Navbar() {
           })}
         </div>
       </nav>
+      {isMobileMenuOpen ? (
+        <div id={mobileMenuId} className="mx-auto max-w-6xl px-4 pb-4 sm:px-6 md:hidden">
+          <div className="grid gap-1 rounded-2xl bg-stone-950/5 p-2">
+            {links[language].map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "rounded-xl px-4 py-3 text-sm font-semibold text-stone-700 transition hover:bg-white/80",
+                    active && "bg-white text-stone-950 shadow-sm",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }

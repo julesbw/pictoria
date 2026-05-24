@@ -44,7 +44,7 @@ export default function ExplorePage() {
     language === "es"
       ? {
           eyebrow: "Colección base",
-          title: "Explora las obras del MVP",
+          title: "Explora las obras",
           description:
             "Filtra por artista, movimiento o dificultad y guarda piezas para tu galería local.",
           count: "obras",
