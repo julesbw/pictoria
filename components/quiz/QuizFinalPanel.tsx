@@ -83,7 +83,7 @@ export function QuizFinalPanel({
       const artworkTitle = getLocalizedArtworkTitle(selectedArtwork, language);
       const dataUrl = await createShareCardPng({
         artworkTitle,
-        imageUrl: selectedArtwork.image_url,
+        imageUrl: getShareArtworkImageUrl(selectedArtwork),
         scoreLabel,
         shareCardSubtitle: resultShareCardSubtitle,
         artistName: selectedArtwork.artist?.name,
@@ -318,6 +318,10 @@ function selectShareArtwork(artworks: Artwork[]) {
   }
 
   return artworks[Math.floor(Math.random() * artworks.length)];
+}
+
+function getShareArtworkImageUrl(artwork: Artwork) {
+  return artwork.cloudinary_url ?? artwork.thumbnail_url ?? artwork.image_url;
 }
 
 function getClassicScoreLabel(correctAnswers: number, language: "es" | "en") {

@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { existsSync, readFileSync } from "node:fs";
+import imageCache from "../data/artwork-image-cache.json" with { type: "json" };
 import seedArtworks from "../data/seed-artworks.json" with { type: "json" };
 
 loadEnvFile(".env.local");
@@ -51,19 +52,42 @@ const movements = Array.from(
   ).values(),
 );
 
-const artworks = seedArtworks.map((artwork) => ({
-  id: artwork.id,
-  title: artwork.title,
-  artist_id: artwork.artist_id,
-  movement_id: artwork.movement_id,
-  year: artwork.year ?? null,
-  image_url: artwork.image_url,
-  wikimedia_file: artwork.wikimedia_file ?? null,
-  description: artwork.description,
-  difficulty: artwork.difficulty,
-  public_domain: artwork.public_domain,
-  source: artwork.source ?? null,
-}));
+const artworks = seedArtworks.map((artwork) => {
+  const cachedImage = imageCache[artwork.id];
+  const row = {
+    id: artwork.id,
+    title: artwork.title,
+    artist_id: artwork.artist_id,
+    movement_id: artwork.movement_id,
+    year: artwork.year ?? null,
+    image_url: artwork.image_url,
+    wikimedia_file: artwork.wikimedia_file ?? null,
+    description: artwork.description,
+    museum: artwork.museum ?? null,
+    source_image_url: artwork.source_image_url ?? cachedImage?.source_url ?? null,
+    attribution: artwork.attribution ?? cachedImage?.attribution ?? cachedImage?.artist_credit ?? null,
+    license: artwork.license ?? cachedImage?.license_short_name ?? null,
+    difficulty: artwork.difficulty,
+    public_domain: artwork.public_domain,
+    source: artwork.source ?? null,
+  };
+
+  for (const key of [
+    "cloudinary_public_id",
+    "cloudinary_url",
+    "thumbnail_url",
+    "blur_data_url",
+    "width",
+    "height",
+    "aspect_ratio",
+  ]) {
+    if (artwork[key] !== undefined) {
+      row[key] = artwork[key];
+    }
+  }
+
+  return row;
+});
 
 await upsert("artists", artists);
 await upsert("movements", movements);

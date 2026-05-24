@@ -13,7 +13,8 @@ build/
 *.tsbuildinfo
 
 # Generated artwork image cache
-# Keep committed so Vercel can serve pre-cached artwork images.
+public/artworks/cache/
+data/cloudinary-artwork-migration.json
 
 # Environment files
 .env

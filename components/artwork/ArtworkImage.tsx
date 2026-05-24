@@ -24,8 +24,8 @@ export function ArtworkImage({
 }: ArtworkImageProps) {
   const { language } = useLanguage();
   const candidates = useMemo(
-    () => [`/api/artworks/${artwork.id}/image`, artwork.image_url],
-    [artwork.id, artwork.image_url],
+    () => [artwork.thumbnail_url, artwork.cloudinary_url, artwork.image_url].filter(Boolean) as string[],
+    [artwork.cloudinary_url, artwork.image_url, artwork.thumbnail_url],
   );
   const [imageIndex, setImageIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -36,7 +36,7 @@ export function ArtworkImage({
   useEffect(() => {
     setImageIndex(0);
     setIsLoaded(false);
-  }, [artwork.id, artwork.image_url]);
+  }, [artwork.id, artwork.cloudinary_url, artwork.image_url, artwork.thumbnail_url]);
 
   if (failed) {
     return (
@@ -61,7 +61,14 @@ export function ArtworkImage({
   return (
     <div className="relative h-full w-full overflow-hidden">
       {!isLoaded ? (
-        <div className={cn("absolute inset-0 animate-pulse", theme.surface)} />
+        <div
+          className={cn("absolute inset-0 animate-pulse bg-cover bg-center", theme.surface)}
+          style={
+            artwork.blur_data_url
+              ? { backgroundImage: `url(${artwork.blur_data_url})` }
+              : undefined
+          }
+        />
       ) : null}
       {withFiller ? (
         <div className="artwork-frame absolute inset-0" />

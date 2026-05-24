@@ -14,6 +14,17 @@ type SupabaseArtworkRow = {
   image_url: string;
   wikimedia_file: string | null;
   description: string;
+  museum: string | null;
+  source_image_url: string | null;
+  cloudinary_public_id: string | null;
+  cloudinary_url: string | null;
+  thumbnail_url: string | null;
+  blur_data_url: string | null;
+  width: number | null;
+  height: number | null;
+  aspect_ratio: number | null;
+  attribution: string | null;
+  license: string | null;
   difficulty: Difficulty;
   public_domain: boolean;
   source: string | null;
@@ -167,6 +178,17 @@ function mapSupabaseArtwork(row: SupabaseArtworkRow): Artwork {
     image_url: row.image_url,
     wikimedia_file: row.wikimedia_file ?? undefined,
     description: row.description,
+    museum: row.museum ?? undefined,
+    source_image_url: row.source_image_url ?? undefined,
+    cloudinary_public_id: row.cloudinary_public_id ?? undefined,
+    cloudinary_url: row.cloudinary_url ?? undefined,
+    thumbnail_url: row.thumbnail_url ?? undefined,
+    blur_data_url: row.blur_data_url ?? undefined,
+    width: row.width ?? undefined,
+    height: row.height ?? undefined,
+    aspect_ratio: row.aspect_ratio ?? undefined,
+    attribution: row.attribution ?? undefined,
+    license: row.license ?? undefined,
     difficulty: row.difficulty,
     public_domain: row.public_domain,
     source: row.source ?? undefined,
