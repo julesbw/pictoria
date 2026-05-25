@@ -4,7 +4,6 @@ import Link from "next/link";
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
 import { ArtworkCard } from "@/components/artwork/ArtworkCard";
-import { LanguageToggle } from "@/components/language/LanguageToggle";
 import { useLanguage } from "@/components/language/LanguageProvider";
 import {
   hasActiveQuizSessionHybrid,
@@ -268,15 +267,12 @@ export function HomeContent({ featuredArtworks }: HomeContentProps) {
   return (
     <section
       ref={heroRef}
-      className="grid min-h-[calc(100dvh-7rem)] items-start gap-10 overflow-x-hidden py-6 lg:h-[calc(100dvh-12rem)] lg:min-h-0 lg:grid-cols-[0.9fr_1.1fr] lg:overflow-visible lg:py-0 lg:pt-10"
+      className="grid min-h-[calc(100dvh-11rem)] items-start gap-10 overflow-x-hidden py-6 lg:h-[calc(100dvh-18rem)] lg:min-h-[35rem] lg:grid-cols-[0.9fr_1.1fr] lg:overflow-visible lg:py-0 lg:pt-8"
     >
       <div className="relative z-10 space-y-6">
-        <div className="flex items-center justify-between gap-4">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-rose-700">
-            {text.eyebrow}
-          </p>
-          <LanguageToggle />
-        </div>
+        <p className="text-sm font-bold uppercase tracking-[0.18em] text-rose-700">
+          {text.eyebrow}
+        </p>
 
         <div className="space-y-4">
           <h1 className="font-serif text-5xl font-semibold leading-tight text-stone-950 sm:text-6xl">
@@ -312,7 +308,7 @@ export function HomeContent({ featuredArtworks }: HomeContentProps) {
 
       <div
         ref={carouselRef}
-        className="relative min-h-[420px] overflow-hidden [touch-action:pan-y] [transform-style:preserve-3d] sm:min-h-[500px] lg:h-[520px] lg:min-h-0 lg:translate-y-14 lg:overflow-visible"
+        className="relative min-h-[420px] overflow-hidden [touch-action:pan-y] [transform-style:preserve-3d] sm:min-h-[500px] lg:h-[500px] lg:min-h-0 lg:translate-y-8 lg:overflow-visible"
       >
         {featuredArtworks.map((artwork, index) => (
           <div

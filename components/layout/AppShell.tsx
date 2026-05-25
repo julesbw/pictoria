@@ -1,5 +1,7 @@
+import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { ThemeWrapper } from "@/components/themes/ThemeWrapper";
+import { cn } from "@/lib/utils";
 import type { MovementThemeKey } from "@/types";
 
 interface AppShellProps {
@@ -10,9 +12,12 @@ interface AppShellProps {
 
 export function AppShell({ children, themeKey, className }: AppShellProps) {
   return (
-    <ThemeWrapper themeKey={themeKey} className={className}>
+    <ThemeWrapper themeKey={themeKey} className={cn("flex flex-col", className)}>
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-12">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 lg:py-12">
+        {children}
+      </main>
+      <Footer />
     </ThemeWrapper>
   );
 }
