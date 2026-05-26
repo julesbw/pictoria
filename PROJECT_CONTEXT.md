@@ -2,9 +2,13 @@
 
 ## Resumen
 
-Pictoria es una web app educativa tipo quiz para aprender sobre pinturas famosas. El usuario ve una obra, responde una pregunta de opción múltiple sobre artista, título o movimiento, recibe feedback educativo y puede guardar obras favoritas en una galería local.
+Pictoria es una web app educativa tipo quiz para aprender sobre pinturas famosas. El usuario ve una obra, responde una pregunta de opción múltiple sobre artista, título o movimiento, recibe feedback educativo y puede guardar obras favoritas en una galería.
 
-El proyecto está en fase MVP local. Todavía no usa Supabase, autenticación, IA, rankings ni multijugador.
+El proyecto está en fase MVP con integración incremental de Supabase. Usa
+`localStorage` como fallback para idioma, favoritos y sesiones de quiz, y
+sincroniza favoritos/sesiones con Supabase cuando hay variables de entorno y
+Auth anónimo disponibles. Todavía no tiene login visible, IA, rankings ni
+multijugador.
 
 ## Notas operativas para Codex
 
@@ -22,8 +26,11 @@ El proyecto está en fase MVP local. Todavía no usa Supabase, autenticación, I
 - Framer Motion
 - GSAP
 - Dataset local JSON
+- Supabase para catálogo remoto, favoritos y sesiones cuando está configurado
+- Auth anónimo de Supabase como identidad temporal
+- Cloudinary para entrega remota de imágenes cuando está sincronizado
 - Cache local de imágenes
-- `localStorage` para favoritos, sesión del quiz e idioma
+- `localStorage` como fallback para favoritos, sesión del quiz e idioma
 
 ## Rutas principales
 
@@ -32,6 +39,9 @@ El proyecto está en fase MVP local. Todavía no usa Supabase, autenticación, I
 - `/explore`: catálogo de obras con filtros.
 - `/gallery`: favoritos locales.
 - `/artists/[id]`: ficha de autor con imagen, contexto, fun fact y obras relacionadas.
+- `/privacy`: aviso de privacidad.
+- `/terms`: términos de uso.
+- `/licenses`: notas de licencias y fuentes.
 - `/api/artworks/[id]/image`: endpoint local para resolver imágenes cacheadas.
 
 ## Datos
@@ -52,6 +62,17 @@ Actualmente contiene 30 obras. Cada obra incluye:
 - `image_url`
 - `wikimedia_file`
 - `description`
+- `museum`
+- `source_image_url`
+- `cloudinary_public_id`
+- `cloudinary_url`
+- `thumbnail_url`
+- `blur_data_url`
+- `width`
+- `height`
+- `aspect_ratio`
+- `attribution`
+- `license`
 - `difficulty`
 - `public_domain`
 - `source`
@@ -110,9 +131,67 @@ La lógica del quiz sigue guardando y comparando respuestas con los valores
 originales del dataset para evitar romper la sesión persistida. Los componentes
 solo transforman el texto visible según el idioma activo.
 
-## Cache de imágenes
+## Catálogo, Supabase y Cloudinary
 
-La arquitectura local de imágenes simula el flujo futuro con Supabase:
+La app puede leer el catálogo desde Supabase mediante:
+
+```txt
+lib/artworks.ts
+```
+
+Si Supabase no está configurado o no devuelve datos, cae al dataset local
+`data/seed-artworks.json`.
+
+La integración de Supabase vive en:
+
+```txt
+lib/supabase/client.ts
+lib/supabase/auth.ts
+lib/supabase/url.ts
+types/supabase.ts
+supabase/migrations/
+scripts/seed-supabase.mjs
+```
+
+La identidad remota actual usa Auth anónimo. No existe todavía UI de login o
+cuentas.
+
+Para preparar Supabase:
+
+```bash
+npm run seed:supabase
+```
+
+Las migraciones actuales son:
+
+```txt
+supabase/migrations/202605220001_initial_pictoria_schema.sql
+supabase/migrations/202605240001_add_cloudinary_artwork_images.sql
+```
+
+Cloudinary está integrado para migrar y servir imágenes remotas. Los scripts
+relevantes son:
+
+```txt
+scripts/migrate-artwork-images-to-cloudinary.mjs
+lib/server/cloudinary.ts
+```
+
+Comandos:
+
+```bash
+npm run migrate:cloudinary
+npm run sync:cloudinary
+```
+
+`migrate:cloudinary` sube imágenes locales y genera
+`data/cloudinary-artwork-migration.json`. `sync:cloudinary` sincroniza ese
+manifest con Supabase.
+
+## Cache local de imágenes
+
+La arquitectura local de imágenes conserva un fallback sin depender de
+Cloudinary/Supabase:
 
 ```txt
 Frontend
@@ -148,6 +227,9 @@ Comando para precachear imágenes:
 ```bash
 npm run cache:images
 ```
+
+En componentes visuales, `ArtworkImage` prioriza `thumbnail_url`,
+`cloudinary_url` e `image_url` según disponibilidad.
 
 ## Quiz
 
@@ -276,10 +358,11 @@ sin responder las 10 preguntas manualmente.
 
 ## Favoritos
 
-Los favoritos se manejan localmente en:
+Los favoritos se manejan en:
 
 ```txt
 lib/favorites.ts
+lib/use-favorites.ts
 ```
 
 Se guardan en `localStorage` bajo:
@@ -287,6 +370,9 @@ Se guardan en `localStorage` bajo:
 ```txt
 pictoria:favorites
 ```
+
+Si Supabase está configurado, se sincronizan con la tabla remota de favoritos.
+Si falla Supabase, `localStorage` se mantiene como fuente funcional.
 
 Garantías actuales:
 
@@ -331,6 +417,7 @@ Layout:
 ```txt
 components/layout/AppShell.tsx
 components/layout/Navbar.tsx
+components/layout/Footer.tsx
 ```
 
 Idioma:
@@ -361,6 +448,7 @@ components/quiz/AnswerOption.tsx
 components/quiz/ResultPanel.tsx
 components/quiz/GameOverPanel.tsx
 components/quiz/ScorePanel.tsx
+components/quiz/QuizFinalPanel.tsx
 ```
 
 Temas:
@@ -373,12 +461,12 @@ components/themes/ThemeWrapper.tsx
 
 - El nombre actual de la app es Pictoria.
 - El brief original puede mencionar ArtGuess, pero la app ya fue renombrada.
-- No conectar Supabase todavía.
-- No agregar auth todavía.
+- Supabase ya está conectado de forma incremental, con `localStorage` como fallback.
+- Auth anónimo de Supabase se usa solo para sincronización; todavía no hay login visible.
 - No agregar IA todavía.
 - No agregar rankings ni multijugador todavía.
 - Mantener el MVP modular para migrar después.
-- Las imágenes deben servirse desde cache local/API, no directamente desde Wikimedia en el frontend.
+- Las imágenes deben servirse desde cache local/API o Cloudinary, no directamente desde Wikimedia en el frontend salvo fallbacks controlados.
 - En tarjetas de obra, la imagen debe llenar el marco (`object-cover`).
 - En modal/detalle de obra, la imagen debe verse completa (`object-contain`) con filler neutro.
 - En Home, el hero usa 6 tarjetas destacadas aleatorias en un carrusel 3D
@@ -425,6 +513,10 @@ Build actual esperado:
 - `/quiz`
 - `/explore`
 - `/gallery`
+- `/artists/[id]`
+- `/privacy`
+- `/terms`
+- `/licenses`
 - `/api/artworks/[id]/image`
 
 ## Próximos pasos sugeridos
@@ -434,15 +526,14 @@ Prioridades sugeridas para siguientes iteraciones:
 1. Mejorar la experiencia del home cuando hay una sesión activa. Ya muestra
    reanudar/continuar por modo, pero todavía podría ofrecer acciones explícitas
    como descartar o empezar de nuevo.
-3. Pulir la tarjeta compartible con variantes visuales o selección automática de pintura según composición, contraste y legibilidad del marcador.
-4. Ocultar o retirar el botón `Dev: saltar 10` antes de una demo pública,
+2. Pulir la tarjeta compartible con variantes visuales o selección automática de pintura según composición, contraste y legibilidad del marcador.
+3. Ocultar o retirar el botón `Dev: saltar 10` antes de una demo pública,
    aunque actualmente solo aparece en `NODE_ENV=development`.
-5. Agregar tests enfocados para `lib/quiz.ts` y `lib/quiz-session.ts`, porque ahí ya vive lógica de negocio importante: generación de opciones, modos de quiz,sesiones persistidas y estados finales.
-6. Pulir persistencia del quiz con pruebas manuales fuertes.
-7. Añadir índice/listado de autores.
-8. Añadir detalle de obra con más metadatos.
-9. Crear scripts de validación del dataset.
-10. Preparar schema de Supabase.
-11. Migrar `data/seed-artworks.json` a tablas.
-12. Migrar `data/artwork-image-cache.json` a tabla de cache.
-13. Migrar `public/artworks/cache` a Supabase Storage.
+4. Agregar tests enfocados para `lib/quiz.ts` y `lib/quiz-session.ts`, porque ahí ya vive lógica de negocio importante: generación de opciones, modos de quiz, sesiones persistidas y estados finales.
+5. Pulir persistencia del quiz con pruebas manuales fuertes.
+6. Añadir índice/listado de autores.
+7. Añadir detalle de obra con más metadatos.
+8. Crear scripts de validación del dataset.
+9. Validar el flujo remoto completo de Supabase con Auth anónimo, favoritos,
+   sesiones y catálogo.
+10. Completar o automatizar la migración de imágenes a Cloudinary/Supabase.

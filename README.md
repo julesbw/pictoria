@@ -1,8 +1,8 @@
 # Pictoria
 
-MVP local de una app educativa para aprender sobre pinturas famosas. El usuario
-ve una obra, responde preguntas de opción múltiple sobre artista, título o
-movimiento, recibe contexto breve y puede guardar favoritos en una galería local.
+MVP de una app educativa para aprender sobre pinturas famosas. El usuario ve una
+obra, responde preguntas de opción múltiple sobre artista, título o movimiento,
+recibe contexto breve y puede guardar favoritos en una galería.
 
 ## Stack
 
@@ -13,7 +13,8 @@ movimiento, recibe contexto breve y puede guardar favoritos en una galería loca
 - Framer Motion
 - GSAP
 - Dataset local JSON
-- Supabase preparado para persistencia remota
+- Supabase incremental para catálogo, favoritos y sesiones
+- Cloudinary preparado para entrega de imágenes
 - Cache local de imágenes
 - `localStorage` para idioma y fallback temporal de favoritos/sesión del quiz
 
@@ -38,8 +39,11 @@ npm run dev:clean
 npm run build
 npm run lint
 npm run cache:images
+npm run migrate:cloudinary
+npm run sync:cloudinary
 npm run seed:supabase
 npm run clean
+npm run start
 ```
 
 Durante desarrollo, preferir `npx tsc --noEmit` para verificación rápida si el
@@ -56,6 +60,9 @@ activo, porque ambos escriben en `.next`.
 - `/explore`: catálogo de obras con filtros.
 - `/gallery`: favoritos locales.
 - `/artists/[id]`: ficha de artista con retrato, contexto y obras relacionadas.
+- `/privacy`: aviso de privacidad.
+- `/terms`: términos de uso.
+- `/licenses`: notas de licencias y fuentes.
 - `/api/artworks/[id]/image`: endpoint local para resolver imágenes cacheadas.
 
 ## Idioma
@@ -113,10 +120,23 @@ ruta consulta `data/artwork-image-cache.json` y sirve imágenes desde
 Si falta una imagen y la obra tiene `wikimedia_file`, la ruta consulta Wikimedia,
 descarga un thumbnail, guarda el archivo localmente y actualiza el cache.
 
+Las obras también pueden tener URLs de Cloudinary (`cloudinary_url`,
+`thumbnail_url`, `blur_data_url`) sincronizadas desde Supabase. El componente de
+imagen prioriza thumbnails/Cloudinary cuando están disponibles y conserva la
+ruta local como fallback.
+
 Para precachear el dataset:
 
 ```bash
 npm run cache:images
+```
+
+Para migrar imágenes locales a Cloudinary y luego sincronizar el manifest con
+Supabase:
+
+```bash
+npm run migrate:cloudinary
+npm run sync:cloudinary
 ```
 
 La tarjeta compartible de los retos de 10 preguntas usa la ruta local `image_url` de la obra y la
@@ -134,6 +154,9 @@ La migración vive en `supabase/migrations` y el seed del catálogo se corre con
 `npm run seed:supabase` usando `SUPABASE_SERVICE_ROLE_KEY`. En `.env.local`,
 `NEXT_PUBLIC_SUPABASE_URL` debe apuntar a la raíz del proyecto Supabase, por
 ejemplo `https://your-project.supabase.co`.
+
+La app intenta leer el catálogo desde Supabase y cae al dataset local si no hay
+configuración o datos remotos disponibles.
 
 ## Favoritos
 
