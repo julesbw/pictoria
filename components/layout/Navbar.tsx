@@ -12,12 +12,14 @@ const links = {
   es: [
     { href: "/", label: "Inicio" },
     { href: "/quiz", label: "Quiz" },
+    { href: "/vs", label: "VS" },
     { href: "/explore", label: "Explorar" },
     { href: "/gallery", label: "Galería" },
   ],
   en: [
     { href: "/", label: "Home" },
     { href: "/quiz", label: "Quiz" },
+    { href: "/vs", label: "VS" },
     { href: "/explore", label: "Explore" },
     { href: "/gallery", label: "Gallery" },
   ],

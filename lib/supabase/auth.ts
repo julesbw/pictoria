@@ -1,33 +1,55 @@
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import type { User } from "@supabase/supabase-js";
 
-let userIdPromise: Promise<string | null> | null = null;
+let anonymousSessionPromise: Promise<User> | null = null;
 
 export async function getSupabaseUserId() {
-  if (!userIdPromise) {
-    userIdPromise = resolveSupabaseUserId();
+  try {
+    const user = await ensureAnonymousSession();
+    return user.id;
+  } catch {
+    return null;
   }
-
-  return userIdPromise;
 }
 
-async function resolveSupabaseUserId() {
+export async function ensureAnonymousSession() {
+  if (!anonymousSessionPromise) {
+    anonymousSessionPromise = resolveAnonymousSession().catch((error) => {
+      anonymousSessionPromise = null;
+      throw error;
+    });
+  }
+
+  return anonymousSessionPromise;
+}
+
+async function resolveAnonymousSession() {
   const supabase = getSupabaseBrowserClient();
-  if (!supabase) return null;
+  if (!supabase) {
+    throw new Error("Supabase no está configurado.");
+  }
 
   const {
     data: { session },
+    error: sessionError,
   } = await supabase.auth.getSession();
 
-  if (session?.user.id) {
+  if (sessionError) {
+    throw new Error("No se pudo revisar la sesión de Supabase.");
+  }
+
+  if (session?.user) {
     await ensureProfile(session.user.id);
-    return session.user.id;
+    return session.user;
   }
 
   const { data, error } = await supabase.auth.signInAnonymously();
-  if (error || !data.user?.id) return null;
+  if (error || !data.user) {
+    throw new Error("No se pudo iniciar sesión anónima. Recarga e intenta de nuevo.");
+  }
 
   await ensureProfile(data.user.id);
-  return data.user.id;
+  return data.user;
 }
 
 async function ensureProfile(userId: string) {

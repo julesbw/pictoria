@@ -258,9 +258,175 @@ export interface Database {
           },
         ];
       };
+      vs_answers: {
+        Row: {
+          id: string;
+          room_id: string | null;
+          round_id: string | null;
+          user_id: string | null;
+          selected_option: string;
+          is_correct: boolean;
+          response_time_ms: number | null;
+          points_earned: number | null;
+          answered_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          room_id?: string | null;
+          round_id?: string | null;
+          user_id?: string | null;
+          selected_option: string;
+          is_correct: boolean;
+          response_time_ms?: number | null;
+          points_earned?: number | null;
+          answered_at?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["vs_answers"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "vs_answers_room_id_fkey";
+            columns: ["room_id"];
+            referencedRelation: "vs_rooms";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vs_answers_round_id_fkey";
+            columns: ["round_id"];
+            referencedRelation: "vs_rounds";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vs_answers_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      vs_room_players: {
+        Row: {
+          id: string;
+          room_id: string | null;
+          user_id: string | null;
+          score: number | null;
+          joined_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          room_id?: string | null;
+          user_id?: string | null;
+          score?: number | null;
+          joined_at?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["vs_room_players"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "vs_room_players_room_id_fkey";
+            columns: ["room_id"];
+            referencedRelation: "vs_rooms";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vs_room_players_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      vs_rooms: {
+        Row: {
+          id: string;
+          room_code: string;
+          status: string;
+          created_by: string | null;
+          winner_user_id: string | null;
+          current_round: number | null;
+          total_rounds: number | null;
+          created_at: string | null;
+          started_at: string | null;
+          finished_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          room_code: string;
+          status?: string;
+          created_by?: string | null;
+          winner_user_id?: string | null;
+          current_round?: number | null;
+          total_rounds?: number | null;
+          created_at?: string | null;
+          started_at?: string | null;
+          finished_at?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["vs_rooms"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "vs_rooms_created_by_fkey";
+            columns: ["created_by"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vs_rooms_winner_user_id_fkey";
+            columns: ["winner_user_id"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      vs_rounds: {
+        Row: {
+          id: string;
+          room_id: string | null;
+          round_number: number;
+          question_id: string;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          room_id?: string | null;
+          round_number: number;
+          question_id: string;
+          created_at?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["vs_rounds"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "vs_rounds_room_id_fkey";
+            columns: ["room_id"];
+            referencedRelation: "vs_rooms";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      advance_vs_room: {
+        Args: {
+          p_room_id: string;
+        };
+        Returns: void;
+      };
+      join_vs_room: {
+        Args: {
+          p_room_code: string;
+        };
+        Returns: string;
+      };
+      submit_vs_answer: {
+        Args: {
+          p_room_id: string;
+          p_round_id: string;
+          p_selected_option: string;
+          p_is_correct: boolean;
+          p_response_time_ms?: number | null;
+          p_points_earned?: number;
+        };
+        Returns: boolean;
+      };
+    };
     Enums: {
       difficulty: "easy" | "medium" | "hard";
       match_status: "waiting" | "active" | "completed" | "cancelled";
