@@ -11,6 +11,9 @@ import {
   buildQuizQuestionFromVsRound,
   didAllVsPlayersAnswerCurrentRound,
   getCurrentUserVsAnswer,
+  getVsOpponentName,
+  getVsPlayerName,
+  getVsPointBreakdown,
   type VsRoomState,
   type VsRound,
 } from "@/lib/vs";
@@ -37,6 +40,8 @@ export function VsGameRound({
   const selectedAnswer = getCurrentUserVsAnswer(state);
   const allAnswered = didAllVsPlayersAnswerCurrentRound(state);
   const answeredCount = state.answers.filter((answer) => answer.roundId === round.id).length;
+  const opponentName = getVsOpponentName(state, language);
+  const pointBreakdown = selectedAnswer ? getVsPointBreakdown(selectedAnswer) : null;
 
   if (!question) {
     return (
@@ -63,9 +68,12 @@ export function VsGameRound({
               key={player.id}
               className="rounded-full border border-stone-950/10 bg-white/75 px-4 py-2 text-sm font-bold text-stone-800 shadow-sm"
             >
-              {player.userId === state.currentUserId
-                ? language === "es" ? "Tú" : "You"
-                : `${language === "es" ? "Rival" : "Opponent"} ${index + 1}`}
+              {getVsPlayerName(player, index, language)}
+              {player.userId === state.currentUserId ? (
+                <span className="pl-1 text-xs uppercase tracking-[0.12em] text-stone-500">
+                  {language === "es" ? "Tú" : "You"}
+                </span>
+              ) : null}
               : {player.score}
             </div>
           ))}
@@ -91,7 +99,7 @@ export function VsGameRound({
                 {language === "es" ? "Pregunta compartida" : "Shared question"}
               </p>
               <p className="rounded-full border border-stone-950/10 bg-white px-3 py-1 text-sm font-bold text-stone-700">
-                {answeredCount}/2
+                {answeredCount}/{state.players.length}
               </p>
             </div>
             <h2 className="mt-2 font-serif text-3xl font-semibold sm:text-4xl">
@@ -114,15 +122,30 @@ export function VsGameRound({
           </div>
 
           {selectedAnswer ? (
-            <div className="rounded-xl border border-stone-950/10 bg-white px-4 py-3 text-sm font-semibold text-stone-800">
-              {selectedAnswer.isCorrect
-                ? language === "es" ? "Correcto: +100 puntos." : "Correct: +100 points."
-                : language === "es" ? "Incorrecto: +0 puntos." : "Incorrect: +0 points."}
-              {!allAnswered ? (
-                <span className="block pt-1 text-stone-600">
-                  {language === "es" ? "Esperando al rival..." : "Waiting for opponent..."}
-                </span>
+            <div className="rounded-xl border border-stone-950/10 bg-white px-4 py-4 text-sm font-semibold text-stone-800">
+              <p className={selectedAnswer.isCorrect ? "text-emerald-700" : "text-rose-700"}>
+                {selectedAnswer.isCorrect
+                  ? language === "es" ? "Correcto" : "Correct"
+                  : language === "es" ? "Incorrecto" : "Incorrect"}
+              </p>
+              <p className="mt-1 text-2xl font-black tabular-nums text-stone-950">
+                +{selectedAnswer.pointsEarned} {language === "es" ? "puntos" : "points"}
+              </p>
+              {selectedAnswer.isCorrect && pointBreakdown ? (
+                <p className="mt-1 text-sm text-stone-600">
+                  {pointBreakdown.base} {language === "es" ? "base" : "base"} +{" "}
+                  {pointBreakdown.speedBonus} {language === "es" ? "rapidez" : "speed"}
+                </p>
               ) : null}
+              <p className="mt-3 text-stone-600">
+                {allAnswered
+                  ? language === "es"
+                    ? "Ambos respondieron. Siguiente ronda..."
+                    : "Both players answered. Next round..."
+                  : language === "es"
+                    ? `Esperando a que responda ${opponentName}...`
+                    : `Waiting for ${opponentName} to answer...`}
+              </p>
             </div>
           ) : null}
 

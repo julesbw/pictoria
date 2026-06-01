@@ -1,7 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/components/language/LanguageProvider";
-import type { VsRoomState } from "@/lib/vs";
+import { getVsPlayerName, type VsRoomState } from "@/lib/vs";
 
 interface VsResultsProps {
   state: VsRoomState;
@@ -13,7 +13,19 @@ export function VsResults({ state, onPlayAgain }: VsResultsProps) {
   const sortedPlayers = [...state.players].sort((first, second) => second.score - first.score);
   const topScore = sortedPlayers[0]?.score ?? 0;
   const tied = sortedPlayers.filter((player) => player.score === topScore).length > 1;
-  const didCurrentUserWin = state.room.winnerUserId === state.currentUserId && !tied;
+  const winnerIndex = state.players.findIndex((player) => player.userId === state.room.winnerUserId);
+  const winner = winnerIndex >= 0 ? state.players[winnerIndex] : sortedPlayers[0];
+  const winnerName = getVsPlayerName(winner, winnerIndex >= 0 ? winnerIndex : 0, language);
+  const tiedNames = sortedPlayers
+    .filter((player) => player.score === topScore)
+    .map((player) => getVsPlayerName(player, state.players.indexOf(player), language));
+  const resultTitle = tied
+    ? language === "es"
+      ? `Empate entre ${tiedNames.join(" y ")}`
+      : `Draw between ${tiedNames.join(" and ")}`
+    : language === "es"
+      ? `Ganó ${winnerName}`
+      : `${winnerName} won`;
 
   return (
     <section className="space-y-5">
@@ -22,11 +34,7 @@ export function VsResults({ state, onPlayAgain }: VsResultsProps) {
           {language === "es" ? "Resultado final" : "Final result"}
         </p>
         <h1 className="mt-2 font-serif text-4xl font-semibold text-stone-950">
-          {tied
-            ? language === "es" ? "Empate" : "Draw"
-            : didCurrentUserWin
-              ? language === "es" ? "Ganaste" : "You won"
-              : language === "es" ? "Ganó tu rival" : "Your opponent won"}
+          {resultTitle}
         </h1>
       </div>
 
@@ -38,15 +46,20 @@ export function VsResults({ state, onPlayAgain }: VsResultsProps) {
           >
             <div>
               <p className="text-sm font-bold text-stone-950">
-                {player.userId === state.currentUserId
-                  ? language === "es" ? "Tú" : "You"
-                  : language === "es" ? "Rival" : "Opponent"}
+                {getVsPlayerName(player, state.players.indexOf(player), language)}
+                {player.userId === state.currentUserId ? (
+                  <span className="pl-2 text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
+                    {language === "es" ? "Tú" : "You"}
+                  </span>
+                ) : null}
               </p>
               <p className="text-xs font-semibold uppercase tracking-[0.12em] text-stone-500">
                 #{index + 1}
               </p>
             </div>
-            <p className="text-2xl font-black tabular-nums text-stone-950">{player.score}</p>
+            <p className="text-2xl font-black tabular-nums text-stone-950">
+              {player.score} <span className="text-sm font-bold text-stone-500">pts</span>
+            </p>
           </div>
         ))}
       </div>
@@ -56,7 +69,7 @@ export function VsResults({ state, onPlayAgain }: VsResultsProps) {
         onClick={onPlayAgain}
         className="rounded-full bg-stone-950 px-5 py-3 text-sm font-bold text-white transition hover:bg-stone-800"
       >
-        {language === "es" ? "Crear otra partida" : "Create another match"}
+        {language === "es" ? "Volver al modo VS" : "Back to VS mode"}
       </button>
     </section>
   );

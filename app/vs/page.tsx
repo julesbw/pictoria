@@ -14,6 +14,7 @@ import {
   getVsRoomStateByCode,
   getVsRoomStateById,
   joinVsRoom,
+  sanitizeVsDisplayName,
   startVsRoom,
   submitVsAnswer,
   type VsRoomState,
@@ -21,13 +22,16 @@ import {
 import { ensureAnonymousSession } from "@/lib/supabase/auth";
 
 const storedRoomCodeKey = "pictoria:vs-room-code";
+const storedPlayerNameKey = "pictoria_vs_player_name";
 
 export default function VsPage() {
   const [roomState, setRoomState] = useState<VsRoomState | null>(null);
   const [loading, setLoading] = useState(false);
   const [authReady, setAuthReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [playerName, setPlayerName] = useState("");
   const roundStartedAtRef = useRef(Date.now());
+  const advancingRoomIdRef = useRef<string | null>(null);
   const currentRoundKey = roomState
     ? `${roomState.room.id}:${roomState.room.currentRound}`
     : "lobby";
@@ -38,9 +42,25 @@ export default function VsPage() {
     const nextState = await getVsRoomStateById(roomId);
 
     if (nextState.room.status === "active" && didAllVsPlayersAnswerCurrentRound(nextState)) {
-      await advanceVsRoomIfReady(nextState.room.id);
-      const advancedState = await getVsRoomStateById(roomId);
-      setRoomState(advancedState);
+      setRoomState(nextState);
+
+      if (advancingRoomIdRef.current !== nextState.room.id) {
+        advancingRoomIdRef.current = nextState.room.id;
+        window.setTimeout(() => {
+          void advanceVsRoomIfReady(nextState.room.id)
+            .then(() => getVsRoomStateById(roomId))
+            .then((advancedState) => {
+              setRoomState(advancedState);
+            })
+            .catch((advanceError: Error) => {
+              setError(advanceError.message);
+            })
+            .finally(() => {
+              advancingRoomIdRef.current = null;
+            });
+        }, 900);
+      }
+
       return;
     }
 
@@ -48,6 +68,11 @@ export default function VsPage() {
   }, [authReady]);
 
   useEffect(() => {
+    const storedPlayerName = window.localStorage.getItem(storedPlayerNameKey);
+    if (storedPlayerName) {
+      setPlayerName(storedPlayerName);
+    }
+
     let cancelled = false;
 
     async function prepareAuth() {
@@ -116,11 +141,15 @@ export default function VsPage() {
   async function handleCreateRoom() {
     if (!authReady) return;
 
+    const displayName = getValidPlayerName();
+    if (!displayName) return;
+
     setLoading(true);
     setError(null);
 
     try {
-      const nextState = await createVsRoom();
+      window.localStorage.setItem(storedPlayerNameKey, displayName);
+      const nextState = await createVsRoom(displayName);
       window.localStorage.setItem(storedRoomCodeKey, nextState.room.roomCode);
       setRoomState(nextState);
     } catch (createError) {
@@ -133,11 +162,15 @@ export default function VsPage() {
   async function handleJoinRoom(roomCode: string) {
     if (!authReady) return;
 
+    const displayName = getValidPlayerName();
+    if (!displayName) return;
+
     setLoading(true);
     setError(null);
 
     try {
-      const nextState = await joinVsRoom(roomCode);
+      window.localStorage.setItem(storedPlayerNameKey, displayName);
+      const nextState = await joinVsRoom(roomCode, displayName);
       window.localStorage.setItem(storedRoomCodeKey, nextState.room.roomCode);
       setRoomState(nextState);
     } catch (joinError) {
@@ -184,6 +217,28 @@ export default function VsPage() {
     setError(null);
   }
 
+  function handlePlayerNameChange(nextPlayerName: string) {
+    setPlayerName(nextPlayerName);
+    const displayName = sanitizeVsDisplayName(nextPlayerName);
+
+    if (displayName) {
+      window.localStorage.setItem(storedPlayerNameKey, displayName);
+    } else {
+      window.localStorage.removeItem(storedPlayerNameKey);
+    }
+  }
+
+  function getValidPlayerName() {
+    const displayName = sanitizeVsDisplayName(playerName);
+
+    if (!displayName) {
+      setError("Escribe tu nombre para jugar el duelo.");
+      return null;
+    }
+
+    return displayName;
+  }
+
   const currentRound = roomState ? getCurrentVsRound(roomState) : null;
 
   return (
@@ -192,7 +247,10 @@ export default function VsPage() {
         <VsLobby
           loading={loading}
           authReady={authReady}
+          playerName={playerName}
+          nameRequired={authReady && sanitizeVsDisplayName(playerName).length === 0}
           error={error}
+          onPlayerNameChange={handlePlayerNameChange}
           onCreate={handleCreateRoom}
           onJoin={handleJoinRoom}
         />

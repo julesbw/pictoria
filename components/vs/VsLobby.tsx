@@ -6,15 +6,28 @@ import { useLanguage } from "@/components/language/LanguageProvider";
 interface VsLobbyProps {
   loading: boolean;
   authReady: boolean;
+  playerName: string;
+  nameRequired: boolean;
   error: string | null;
+  onPlayerNameChange: (playerName: string) => void;
   onCreate: () => void;
   onJoin: (roomCode: string) => void;
 }
 
-export function VsLobby({ loading, authReady, error, onCreate, onJoin }: VsLobbyProps) {
+export function VsLobby({
+  loading,
+  authReady,
+  playerName,
+  nameRequired,
+  error,
+  onPlayerNameChange,
+  onCreate,
+  onJoin,
+}: VsLobbyProps) {
   const { language } = useLanguage();
   const [roomCode, setRoomCode] = useState("");
-  const disabled = loading || !authReady;
+  const hasPlayerName = playerName.trim().length > 0;
+  const disabled = loading || !authReady || !hasPlayerName;
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,6 +51,24 @@ export function VsLobby({ loading, authReady, error, onCreate, onJoin }: VsLobby
         {!authReady ? (
           <p className="mt-4 text-sm font-semibold text-stone-500">
             {language === "es" ? "Preparando sesión..." : "Preparing session..."}
+          </p>
+        ) : null}
+        <label htmlFor="vs-player-name" className="mt-5 block text-sm font-semibold text-stone-900">
+          {language === "es" ? "Tu nombre" : "Your name"}
+        </label>
+        <input
+          id="vs-player-name"
+          value={playerName}
+          onChange={(event) => onPlayerNameChange(event.target.value)}
+          maxLength={40}
+          placeholder={language === "es" ? "Ej. Julio" : "E.g. Alex"}
+          className="mt-2 w-full rounded-xl border border-stone-950/15 bg-white px-4 py-3 text-base font-semibold text-stone-950 outline-none transition focus:border-stone-950/40 focus:ring-4 focus:ring-stone-950/5"
+        />
+        {nameRequired ? (
+          <p className="mt-2 text-sm font-semibold text-rose-700">
+            {language === "es"
+              ? "Escribe tu nombre para jugar el duelo."
+              : "Enter your name to play the duel."}
           </p>
         ) : null}
         <button

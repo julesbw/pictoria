@@ -308,6 +308,7 @@ export interface Database {
           id: string;
           room_id: string | null;
           user_id: string | null;
+          display_name: string | null;
           score: number | null;
           joined_at: string | null;
         };
@@ -315,6 +316,7 @@ export interface Database {
           id?: string;
           room_id?: string | null;
           user_id?: string | null;
+          display_name?: string | null;
           score?: number | null;
           joined_at?: string | null;
         };
@@ -412,6 +414,7 @@ export interface Database {
       join_vs_room: {
         Args: {
           p_room_code: string;
+          p_display_name?: string | null;
         };
         Returns: string;
       };

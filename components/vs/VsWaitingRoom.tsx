@@ -1,7 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/components/language/LanguageProvider";
-import type { VsRoomState } from "@/lib/vs";
+import { getVsPlayerName, type VsRoomState } from "@/lib/vs";
 
 interface VsWaitingRoomProps {
   state: VsRoomState;
@@ -57,16 +57,22 @@ export function VsWaitingRoom({
           <div className="mt-4 grid gap-3">
             {[0, 1].map((slot) => {
               const player = state.players[slot];
+              const playerName = getVsPlayerName(player, slot, language);
               return (
                 <div
                   key={player?.id ?? slot}
                   className="rounded-xl border border-stone-950/10 bg-white px-4 py-3 text-sm font-semibold text-stone-800"
                 >
-                  {player
-                    ? player.userId === state.currentUserId
-                      ? language === "es" ? "Tú" : "You"
-                      : language === "es" ? "Rival conectado" : "Opponent connected"
-                    : language === "es" ? "Esperando jugador..." : "Waiting for player..."}
+                  {player ? (
+                    <span>
+                      {playerName}
+                      {player.userId === state.currentUserId ? (
+                        <span className="pl-2 text-xs font-bold uppercase tracking-[0.12em] text-stone-500">
+                          {language === "es" ? "Tú" : "You"}
+                        </span>
+                      ) : null}
+                    </span>
+                  ) : language === "es" ? "Esperando jugador..." : "Waiting for player..."}
                 </div>
               );
             })}
@@ -80,8 +86,8 @@ export function VsWaitingRoom({
           <p className="mt-4 text-sm leading-6 text-stone-700">
             {isCreator
               ? language === "es"
-                ? "Cuando haya 2 jugadores, podrás iniciar las 5 rondas."
-                : "Once 2 players are in, you can start the 5 rounds."
+                ? `Cuando haya 2 jugadores, podrás iniciar las ${state.room.totalRounds} rondas.`
+                : `Once 2 players are in, you can start the ${state.room.totalRounds} rounds.`
               : language === "es"
                 ? "Espera a que el creador inicie la partida."
                 : "Wait for the creator to start the match."}
@@ -95,7 +101,7 @@ export function VsWaitingRoom({
             >
               {loading
                 ? language === "es" ? "Iniciando..." : "Starting..."
-                : language === "es" ? "Iniciar partida" : "Start match"}
+                : language === "es" ? "Iniciar duelo" : "Start duel"}
             </button>
           ) : null}
           {error ? (
